@@ -19,13 +19,13 @@ import {
 // 다른 Firebase 프로젝트로 옮길 경우 이 객체만 교체하면 됩니다.
 // ─────────────────────────────────────────────────────────────
 const firebaseConfig = {
-  apiKey:            "AIzaSyCz-QziDKUKmYAIlXigd3GlTaM_oyzj2dQ",
-  authDomain:        "studymap-89c09.firebaseapp.com",
-  projectId:         "studymap-89c09",
-  storageBucket:     "studymap-89c09.firebasestorage.app",
+  apiKey: "AIzaSyCz-QziDKUKmYAIlXigd3GlTaM_oyzj2dQ",
+  authDomain: "studymap-89c09.firebaseapp.com",
+  projectId: "studymap-89c09",
+  storageBucket: "studymap-89c09.firebasestorage.app",
   messagingSenderId: "20865447129",
-  appId:             "1:20865447129:web:419f96f419b4cba0a43ac8",
-  measurementId:     "G-L7LW590E8Q"
+  appId: "1:20865447129:web:419f96f419b4cba0a43ac8",
+  measurementId: "G-L7LW590E8Q"
 };
 
 const HAS_CONFIG = !!firebaseConfig.apiKey && !firebaseConfig.apiKey.startsWith("PASTE_");
