@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>공판절차 OX 퀴즈 — 별표 정리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1d24;
+    --paper:#f4f1ea;
+    --paper-2:#ece7db;
+    --line:#d8d2c4;
+    --accent:#7a1f2b;       /* deep crimson - 형사 느낌 */
+    --accent-soft:#a8424f;
+    --o-color:#1f6b4a;
+    --x-color:#b03030;
+    --gold:#9a7b2e;
+    --muted:#6f6a5e;
+    --shadow:rgba(40,30,20,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'IBM Plex Sans KR',sans-serif;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(122,31,43,.05), transparent 40%),
+      radial-gradient(circle at 88% 92%, rgba(154,123,46,.06), transparent 42%),
+      var(--paper);
+    color:var(--ink);
+    line-height:1.7;
+    padding:0 0 80px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:780px;margin:0 auto;padding:0 20px;}
+
+  /* ===== Header ===== */
+  header{
+    padding:54px 20px 40px;
+    text-align:center;
+    border-bottom:2px solid var(--ink);
+    position:relative;
+    background:linear-gradient(180deg, var(--paper-2), transparent);
+  }
+  .eyebrow{
+    font-size:13px;letter-spacing:.42em;text-transform:uppercase;
+    color:var(--accent);font-weight:600;margin-bottom:14px;
+  }
+  header h1{
+    font-family:'Gowun Batang',serif;
+    font-size:clamp(30px,6vw,46px);
+    font-weight:700;letter-spacing:-.01em;line-height:1.15;
+  }
+  header .sub{
+    margin-top:14px;font-size:15px;color:var(--muted);
+    font-weight:300;
+  }
+  .crest{
+    display:inline-block;margin-bottom:18px;
+    width:46px;height:46px;border:2px solid var(--ink);border-radius:50%;
+    line-height:42px;font-family:'Gowun Batang',serif;font-size:22px;font-weight:700;
+    color:var(--ink);
+  }
+
+  /* ===== Progress ===== */
+  .progress-bar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(244,241,234,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:12px 20px;
+  }
+  .progress-inner{max-width:780px;margin:0 auto;display:flex;align-items:center;gap:14px;}
+  .ptrack{flex:1;height:7px;background:var(--paper-2);border-radius:99px;overflow:hidden;border:1px solid var(--line);}
+  .pfill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-soft));border-radius:99px;transition:width .4s cubic-bezier(.2,.8,.2,1);}
+  .pstat{font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .pscore{font-size:13px;font-weight:600;color:var(--accent);white-space:nowrap;font-variant-numeric:tabular-nums;}
+
+  /* ===== Section ===== */
+  .section-head{
+    margin:46px 0 8px;
+    display:flex;align-items:baseline;gap:12px;
+  }
+  .section-head .num{
+    font-family:'Gowun Batang',serif;font-size:15px;font-weight:700;
+    color:#fff;background:var(--accent);
+    min-width:30px;height:30px;border-radius:6px;
+    display:inline-flex;align-items:center;justify-content:center;
+    flex-shrink:0;align-self:center;
+  }
+  .section-head h2{
+    font-family:'Gowun Batang',serif;font-size:21px;font-weight:700;
+  }
+  .section-note{
+    font-size:13.5px;color:var(--muted);margin:0 0 20px 42px;
+    border-left:2px solid var(--gold);padding-left:12px;
+  }
+
+  /* ===== Card ===== */
+  .q{
+    background:#fdfbf6;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:22px 22px 20px;
+    margin-bottom:16px;
+    box-shadow:0 2px 10px var(--shadow);
+    position:relative;
+    transition:border-color .25s, box-shadow .25s;
+  }
+  .q.answered{box-shadow:0 1px 4px var(--shadow);}
+  .q-tag{
+    display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;
+    color:var(--gold);border:1px solid var(--gold);border-radius:99px;
+    padding:1px 9px;margin-bottom:12px;
+  }
+  .q-num{
+    font-family:'Gowun Batang',serif;font-weight:700;color:var(--accent);
+    margin-right:8px;
+  }
+  .q-text{font-size:15.5px;line-height:1.75;color:var(--ink);}
+
+  .choices{display:flex;gap:12px;margin-top:18px;}
+  .choice{
+    flex:1;border:1.5px solid var(--line);background:#fff;
+    border-radius:10px;padding:13px 0;cursor:pointer;
+    font-family:'Gowun Batang',serif;font-size:24px;font-weight:700;
+    transition:all .18s ease;color:var(--muted);
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .choice .lab{font-family:'IBM Plex Sans KR';font-size:13px;font-weight:500;}
+  .choice:hover:not(:disabled){transform:translateY(-2px);border-color:var(--ink);color:var(--ink);}
+  .choice:disabled{cursor:default;}
+  .choice.sel-correct{background:var(--o-color);border-color:var(--o-color);color:#fff;}
+  .choice.sel-wrong{background:var(--x-color);border-color:var(--x-color);color:#fff;}
+  .choice.reveal-correct{border-color:var(--o-color);color:var(--o-color);background:rgba(31,107,74,.08);}
+
+  .explain{
+    margin-top:0;max-height:0;overflow:hidden;
+    transition:max-height .4s ease, margin-top .3s ease;
+  }
+  .explain.show{max-height:400px;margin-top:16px;}
+  .explain-inner{
+    border-top:1px dashed var(--line);padding-top:14px;
+    font-size:14px;line-height:1.7;color:#3a3a3a;
+  }
+  .verdict{font-weight:700;font-family:'Gowun Batang',serif;font-size:15px;margin-right:6px;}
+  .verdict.o{color:var(--o-color);}
+  .verdict.x{color:var(--x-color);}
+  .cite{
+    display:inline-block;font-size:12px;color:var(--accent);
+    background:rgba(122,31,43,.07);border-radius:5px;padding:1px 7px;
+    margin-top:8px;font-weight:500;
+  }
+
+  /* ===== Result ===== */
+  #result{
+    margin-top:50px;padding:34px 28px;border-radius:14px;
+    background:linear-gradient(135deg,var(--ink),#2e333d);
+    color:var(--paper);text-align:center;display:none;
+    box-shadow:0 8px 28px rgba(40,30,20,.3);
+  }
+  #result.show{display:block;animation:pop .5s ease;}
+  @keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+  #result h3{font-family:'Gowun Batang',serif;font-size:24px;margin-bottom:8px;}
+  #result .big{font-family:'Gowun Batang',serif;font-size:52px;font-weight:700;color:#e9c46a;margin:6px 0;}
+  #result .msg{font-size:14.5px;color:#cfc9bd;font-weight:300;}
+  .retry{
+    margin-top:22px;background:transparent;border:1.5px solid var(--paper);
+    color:var(--paper);padding:11px 26px;border-radius:99px;cursor:pointer;
+    font-family:'IBM Plex Sans KR';font-size:14px;font-weight:500;transition:all .2s;
+  }
+  .retry:hover{background:var(--paper);color:var(--ink);}
+
+  footer{text-align:center;margin-top:40px;font-size:12px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="crest">刑</span>
+  <div class="eyebrow">형사소송법 · 공판</div>
+  <h1>제2장 공판절차<br>별표 OX 퀴즈</h1>
+  <p class="sub">★·☆ 표시 지문만 추려 만든 38문항 · 답을 고르면 즉시 해설이 펼쳐집니다</p>
+</header>
+
+<div class="progress-bar">
+  <div class="progress-inner">
+    <span class="pstat" id="pstat">0 / 38</span>
+    <div class="ptrack"><div class="pfill" id="pfill"></div></div>
+    <span class="pscore" id="pscore">정답 0</span>
+  </div>
+</div>
+
+<div class="wrap" id="quiz"></div>
+
+<div class="wrap">
+  <div id="result">
+    <h3>채점 결과</h3>
+    <div class="big" id="rscore">0 / 38</div>
+    <p class="msg" id="rmsg"></p>
+    <button class="retry" onclick="resetQuiz()">다시 풀기</button>
+  </div>
+</div>
+
+<footer>공판준비 · 증거개시 · 송달 · 변론 · 증거조사 · 증인적격 · 증언거부권 · 위증죄 · 반대신문권 · 감정인 · 피해자권리</footer>
+
+<script>
+const DATA = [
+  { sec:"1. 공판준비절차 · 증거개시", note:"출석의무 없으면 고지의무도 없다 / 변호인 있으면 피고인은 '열람만' / 거부 자체가 기본권 침해",
+    items:[
+      {tag:"변21", q:"피고인 출석 없이도 공판준비기일을 개정할 수 있기 때문에, 법원의 소환 없이 출석한 피고인에게 진술거부권을 고지할 의무는 없다.", a:"O", ex:"준비기일은 피고인 출석 없이 개정 가능(266조의8 ⑤)하므로 고지의무도 없다.", cite:"제266조의8 ⑤"},
+      {tag:"변13", q:"피고인에게 변호인이 있는 경우에도 피고인은 검사에게 서류 등의 열람·등사 또는 서면의 교부를 신청할 수 있다.", a:"X", ex:"변호인이 있으면 피고인은 '열람만' 신청 가능(단서).", cite:"제266조의3 ① 단서"},
+      {tag:"변13", q:"법원의 열람·등사 허용결정이 있음에도 검사가 거부하면, 서류 각각의 정당한 사유를 심사할 필요 없이 그 거부행위 자체로써 기본권 침해이다.", a:"O", ex:"거부행위 자체로 열람·등사권·신속공정재판권·변호인조력권 침해.", cite:"2009헌마257"},
+      {tag:"변13", q:"검사가 법원의 허용결정을 이행하지 않으면 증거신청을 못 하게 될 뿐이므로, 그 불이익만 감수하면 결정을 따르지 않아도 위법하지 않다.", a:"X", ex:"불이익 감수가 곧 거부 허용을 뜻하지 않는다. 거부 자체가 위헌.", cite:"2009헌마257"},
+      {tag:"증거개시", q:"법원의 증거개시에 관한 결정에 대하여는 즉시항고를 할 수 있다.", a:"X", ex:"판결 전 소송절차 결정·별도 항고규정 없음 → 402조 항고로도 불복 불가.", cite:"2012모1393"},
+    ]},
+  { sec:"2. 송달", note:"구속된 자 → 소장에게 송달하면 효력 발생 / 수감 중인 피고인에게 종전 주소·공시송달은 위법",
+    items:[
+      {tag:"91도3272", q:"교도소·구치소에 구속된 자에 대한 송달은 그 소장에게 송달하면 본인 전달 여부와 관계없이 효력이 발생한다.", a:"O", ex:"형소법 65조, 민소법 182조.", cite:"91도3272"},
+      {tag:"2013도2714", q:"법원이 수감 중인 피고인에게 공소장 부본·소환장을 종전 주소지나 공시송달의 방법으로 송달하였다면 이는 위법하다.", a:"O", ex:"수감 사실을 알 수 있는데 종전 주소·공시송달은 위법.", cite:"2013도2714"},
+    ]},
+  { sec:"3. 변론 · 최종의견 · 변론재개 · 선고", note:"원칙은 법원 재량, 단 실질적 권리침해는 위법 / 선고 변경은 특별한 사정 있을 때만",
+    items:[
+      {tag:"변24", q:"재판장이 변호인의 최후변론 직후 선고기일을 고지해 피고인에게 최종의견 진술 기회를 주지 않았어도, 소송지휘권 범위 내 재량이라 법령위반이 아니다.", a:"X", ex:"303조상 피고인과 변호인 '모두'에게 기회를 줘야 함 → 법령위반.", cite:"2018도327"},
+      {tag:"변론재개", q:"검사·피고인에게 충분한 기회를 주고 변론을 종결한 이상, 그 후의 변론재개신청을 받아들이지 않아도 위법하다고 할 수 없다.", a:"O", ex:"변론재개는 법원의 재량.", cite:"2014도1414"},
+      {tag:"변24", q:"항소심이 변론종결 후 선임된 변호인의 변론재개신청을 들어주지 않았다면 심리미진의 위법이 있다.", a:"X", ex:"재개신청 불허는 심리미진 위법이 아니다.", cite:"86도769"},
+      {tag:"증인신청", q:"법원이 적법하게 심리를 종결한 뒤 피고인이 증인신청을 하면, 법원은 반드시 심리를 재개해 증인신문을 하여야 한다.", a:"X", ex:"재개 여부는 재량 → 반드시 할 필요 없음.", cite:"2010도7947"},
+      {tag:"변26", q:"재판장이 징역 6월을 낭독한 뒤 피고인이 난동을 부리자 징역 1년으로 변경 선고하였다면, 선고가 마무리되기 전의 변경이라 적법하다.", a:"X", ex:"주문을 외부 표시한 뒤에는 잘못 낭독·내용 오류 등 특별한 사정 있을 때만 변경 허용.", cite:"2017도3884"},
+    ]},
+  { sec:"4. 피고인 불출석 재판", note:"구속피고인 출석거부+인치곤란 → 진행 가능 / 송달불능 6개월, 단 사형·무기·장기10년 초과 제외",
+    items:[
+      {tag:"277조의2", q:"피고인이 출석해야 개정하는 경우라도, 구속된 피고인이 정당한 사유 없이 출석을 거부하고 인치가 불가능·현저히 곤란하면 출석 없이 공판절차를 진행할 수 있다.", a:"O", ex:"제277조의2 ①.", cite:"제277조의2 ①"},
+      {tag:"변24", q:"제1심에서 송달불능보고서 접수 후 6개월이 지나도록 소재 확인이 안 되면 진술 없이 재판할 수 있으나, 사형·무기·장기 10년 초과 사건은 그럴 수 없다.", a:"O", ex:"소촉법 23조.", cite:"소촉법 제23조"},
+    ]},
+  { sec:"5. 증거조사 이의신청 · 증거신청 재량", note:"증거조사 이의=법령위반 또는 부당 / 증거결정 이의=법령위반만 / 핵심증인 채택취소는 위법",
+    items:[
+      {tag:"규칙135조의2", q:"증거조사에 대한 이의신청은 법령위반이 있거나 상당하지 아니함을 이유로 할 수 있다.", a:"O", ex:"증거조사 이의 = 법령위반 또는 부당.", cite:"규칙 제135조의2"},
+      {tag:"규칙135조의2", q:"증거신청(증거결정)에 대한 법원의 결정에 대해서는 법령의 위반이 있음을 이유로 하여서만 이의신청할 수 있다.", a:"O", ex:"증거결정 이의 = 법령위반 사유만.", cite:"규칙 제135조의2"},
+      {tag:"모25", q:"법원은 증거조사 이의신청이 있을 때마다 즉시 결정하여야 하며, 그 결정에 대하여는 다시 이의신청할 수 없다.", a:"O", ex:"규칙 138조·140조.", cite:"규칙 제138·140조"},
+      {tag:"변26", q:"추가조사가 불필요한 특별한 사정도 없고 소재탐지·구인장 발부가 불가능하지도 않은데, 불출석 핵심 증인에 대해 소재탐지·구인장 없이 증인채택 결정을 취소하는 것은 재량 일탈로 위법하다. 이는 특정범죄신고자보호법 적용 사건도 마찬가지다.", a:"O", ex:"핵심 증인 채택취소는 재량 일탈·위법, 신고자보호법 사건도 동일.", cite:"2020도2623"},
+      {tag:"변26", q:"당사자의 증거신청에 대한 채택여부 결정은 판결 전 소송절차 결정으로서 이의신청 외에는 불복방법이 없고, 사실오인으로 판결에 영향을 미친 경우에만 상소이유가 된다.", a:"O", ex:"보통항고·즉시항고·준항고 모두 불가.", cite:"90도646"},
+    ]},
+  { sec:"6. 증거조사 방식", note:"화상 진술청취는 동의해도 치유 X / 증거물인 서면=낭독+제시 둘 다 / 녹음매체=반드시 재생",
+    items:[
+      {tag:"모25", q:"해외체류자에 대해 선서 없이 화상으로 청취한 진술·녹음파일은 증거능력이 없지만, 피고인·변호인이 그 절차에 동의하고 증거로 함에 동의하였다면 위법성이 치유된다.", a:"X", ex:"증인신문절차를 안 거친 진술은 동의해도 위법성 치유 안 됨.", cite:"2020도14843"},
+      {tag:"변24", q:"'증거물인 서면'을 조사하려면 증거서류 조사방식(낭독·내용고지·열람)과 증거물 조사방식(제시)이 함께 이루어져야 한다.", a:"O", ex:"예: 무고사건 고소장. 두 방식 병행.", cite:"2013도2511"},
+      {tag:"변26", q:"녹음·녹화매체 증거조사는 재생·청취·시청 방법으로 해야 하므로, CD를 따로 안 내고 요약 수사보고서만 서증으로 낸 경우 CD를 증거조사 없이 유죄증거로 채택해선 안 된다.", a:"O", ex:"형소법 292조의3, 규칙 134조의8.", cite:"2009도13846"},
+    ]},
+  { sec:"7. 공동피고인의 증인적격 · 진술 증거능력", note:"두 변수만 보면 끝: ① 공범인가 ② 변론분리됐는가. 공범+병합=피고인진술 그대로 OK / 비공범=증인으로만",
+    items:[
+      {tag:"변25", q:"乙(절도교사)·甲(절도) 공동피고인 사건에서, 甲이 법정에서 乙의 교사를 진술하더라도 증인으로서 진술한 것이 아니면 甲의 법정진술은 증거능력이 없다.", a:"X", ex:"공범인 공동피고인 자백은 반대신문권 보장돼 그대로 증거능력 O.", cite:"2006도1944"},
+      {tag:"변14", q:"뇌물 수수·공여(대향범)로 공동피고인인 乙이 피고인신문에서 공여사실을 자백한 진술은 甲에 대한 증거로 쓸 수 있지만, 乙이 허위진술해도 위증죄는 성립하지 않는다.", a:"O", ex:"반대신문권 보장으로 증거능력 O, 선서한 증인 아니라 위증죄 X.", cite:"대향범=공범"},
+      {tag:"변26", q:"절도·장물(비공범) 공동피고인 사건에서, 甲이 피고인신문 중 '훔친 물건이라고 분명히 말해줬다'고 답한 진술은 乙의 공소사실 인정 증거로 사용할 수 있다.", a:"X", ex:"비공범은 증인 지위 → 피고인 진술은 증거능력 없음. 증인으로 신문해야.", cite:"82도1000"},
+      {tag:"변26", q:"위 사안에서 같은 내용이 기재된 甲에 대한 사경 작성 피의자신문조서는, 乙이 내용부인 취지로 증거부동의 하는 한 乙의 공소사실에 증거능력이 없다.", a:"X", ex:"비공범이라 312조 4항 적용 → 원진술자 甲의 증언으로 진정성립 인정돼야. (지문은 312③ 전제라 X)", cite:"312조 ④ / 2005도7601"},
+      {tag:"변12", q:"위 사례에서 사경 작성 甲 피신조서에 대해 乙은 부동의, 甲은 진정성립·임의성을 인정하면 그 조서는 乙에 대한 유죄 증거가 된다.", a:"X", ex:"의견진술절차는 피고인 지위에서 진행 → 甲의 인정만으론 乙 증거 안 됨.", cite:"82도1000·2005도7601"},
+      {tag:"변20", q:"甲·乙 쌍방폭행으로 병합심리 중, 甲이 피고인신문에서 '乙이 먼저 폭행했다'고 한 진술은 乙의 폭행죄에 대해 증거능력이 있다.", a:"X", ex:"쌍방폭행=비공범 공동피고인 → 피고인 지위 진술은 증거능력 없음.", cite:"비공범 법리"},
+      {tag:"변18", q:"특수절도(甲·乙 공범)와 乙 단독절도를 함께 기소한 사건에서, 甲이 '乙이 (단독)절도하는 것을 보았다'고 한 진술은 그 단독절도 사실에 증거능력이 있다.", a:"X", ex:"단독절도 부분에서 甲은 목격자=비공범 → 피고인 진술 증거능력 없음.", cite:"비공범 법리"},
+      {tag:"변17", q:"강도치상 공동정범(공범)으로 병합심리 중, 변론 분리 없이도 甲은 乙의 범죄사실에 대한 증인적격이 인정된다.", a:"X", ex:"공범인 공동피고인은 분리해야 증인적격 생김.", cite:"2008도3300"},
+      {tag:"변13", q:"쌍방폭행 공동피고인 甲은 변론분리 전 乙 사건에 증인적격이 없고, 분리되지 않은 채 증언해도 위증죄 주체가 될 수 없다.", a:"X", ex:"비공범이라 분리 없이도 증인적격 인정 → 위증죄 주체 될 수 있음.", cite:"비공범 법리"},
+      {tag:"변26", q:"절도·장물(비공범) 사건에서 변론을 분리해 甲이 선서 후 증언한 경우, 이는 증인적격 없는 자의 증언이라 乙의 공소사실 인정 증거로 쓸 수 없다.", a:"X", ex:"비공범은 증인적격 있음 → 증언 증거능력 O.", cite:"82도1000"},
+      {tag:"변17", q:"5세 아동 B가 사건을 이해·답변할 수 있더라도 16세 미만 선서무능력자이므로 그 증언은 증거로 할 수 없다.", a:"X", ex:"의사판단능력 있으면 증언능력 인정.", cite:"84도619 / 2005도9561"},
+      {tag:"변16", q:"4세 선서무능력자가 선서 후 한 증언은 증언능력 유무와 관계없이 증언 자체의 효력이 부정된다.", a:"X", ex:"선서만 무효, 증언 효력은 유효.", cite:"4290형상23"},
+    ]},
+  { sec:"8·9. 증언거부권 · 위증죄", note:"거부권 존부 먼저 / 위증죄는 '진정한 의사로 진술했는가' 하나로 갈림",
+    items:[
+      {tag:"변19", q:"혼인했다가 이혼한 사이라도 甲은 '친족관계에 있었던 자'로서 증언거부권이 있다.", a:"O", ex:"148조: 친족이거나 '친족이었던' 사람.", cite:"제148조"},
+      {tag:"변22", q:"변호사는 업무상 위탁받아 알게 된 타인의 비밀에 관해 증언을 거부할 수 있고, 다만 본인 승낙·중대 공익상 필요가 있으면 그러하지 아니하다.", a:"O", ex:"제149조.", cite:"제149조"},
+      {tag:"변22", q:"유죄판결이 확정된 증인이 공범 사건에서 증언할 당시 앞으로 재심을 청구할 예정이라면, 148조에 의한 증언거부권이 인정된다.", a:"X", ex:"재심 예정이라도 거부권 인정 안 됨.", cite:"2011도11994"},
+      {tag:"변25", q:"선서한 증인이 증언거부권을 고지받고도 행사하지 않고 허위진술한 경우, 적법행위 기대가능성이 없다고 할 수 없으므로 위증죄를 면할 수 없다.", a:"O", ex:"고지받고 행사 안 함 → 위증죄 성립.", cite:"위증죄 법리"},
+      {tag:"변13", q:"거부사유가 있는데 거부권을 고지받지 못한 채 허위진술하면 원칙적으로 위증죄가 성립하지 않지만, 고지받았어도 포기하고 허위진술했을 것이 인정되는 등 진정한 의사에 의한 것이면 위증죄가 성립한다.", a:"O", ex:"기준은 '진정한 의사'.", cite:"2008도942"},
+      {tag:"변22", q:"증언거부사유가 있음에도 고지받지 못해 거부권 행사에 사실상 장애가 초래되었다고 볼 수 있는 경우에는 위증죄가 성립하지 않는다.", a:"O", ex:"사실상 장애 초래 → 위증죄 부정.", cite:"2008도942"},
+      {tag:"변26", q:"공범인 공동피고인의 소송절차를 분리한 후 증인적격을 인정하고 신문하더라도 진술거부권·자기부죄거부특권 침해가 아니므로, 거부권 고지받고도 행사 않고 허위진술하면 위증죄가 성립한다.", a:"O", ex:"분리 후 증인은 거부권 실질 보장됨 → 위증죄 성립.", cite:"2024도163 전합"},
+      {tag:"변17", q:"강도상해 범행을 부인했으나 유죄판결이 확정된 자는, 별건 공범사건에서 사실대로 진술할 기대가능성이 없으므로 부인 허위증언을 해도 위증죄가 성립하지 않는다.", a:"X", ex:"확정판결로 일사부재리 → 증언거부 불가 → 위증죄 성립.", cite:"2005도10101"},
+    ]},
+  { sec:"10·11. 반대신문권 · 책문권 치유", note:"반대신문권은 실질적·효과적이어야 / 명시적 책문권 포기는 하자 치유",
+    items:[
+      {tag:"모25", q:"항소심 증인이 검사 주신문엔 답하고 피고인 측 반대신문엔 답하지 않은 뒤 이후 불출석했어도, 그 법정진술은 피고인에 대한 유죄증거로 사용할 수 있다.", a:"X", ex:"실질적 반대신문 기회 없으면 위법한 증거.", cite:"2016도17054"},
+      {tag:"2016도17054", q:"위와 같이 실질적 반대신문 기회가 없었던 경우, 피고인의 책문권 포기로도 그 하자는 치유될 수 없다.", a:"X", ex:"명시적 책문권 포기로 치유 가능.", cite:"2016도17054"},
+      {tag:"변22", q:"법정 외 증인신문에서 피고인에게 통지하지 않아 참여기회를 안 줬다면, 이후 공판기일에 피고인·변호인이 '별 의견 없다'고 진술했어도 하자는 치유되지 않는다.", a:"X", ex:"별 의견 없다 진술 → 책문권 포기로 치유.", cite:"80도306"},
+      {tag:"변22", q:"공판기일에 증인은 출석했으나 피고인이 정당한 사유 없이 불출석해 기일을 연기할 수밖에 없는 경우, 이미 출석한 증인을 공판기일 외 신문하고 다음 기일에 서증조사 하는 것은 위법하다.", a:"X", ex:"이 경우 공판기일 외 신문은 적법.", cite:"2000도3265"},
+      {tag:"변24", q:"검사가 적의·반감 없는 증인에게 유도신문을 했더라도, 다음 기일에 피고인이 '변경·이의할 점 없다'고 진술했다면 주신문의 하자가 치유된다.", a:"O", ex:"책문권 포기 명시로 유도신문 하자 치유.", cite:"2012도2937"},
+    ]},
+  { sec:"12. 증인신문 절차 · 증인보호", note:"주신문=유도 금지, 반대신문=유도 허용 / 퇴정해도 반대신문권 배제는 안 됨 / 차폐는 검사·변호인·방청인에도 가능",
+    items:[
+      {tag:"변20", q:"주신문에서는 유도신문이 원칙적으로 허용되나, 반대신문에서는 유도신문이 허용되지 않는다.", a:"X", ex:"거꾸로. 주신문 원칙 금지, 반대신문 허용.", cite:"규칙 75·76조"},
+      {tag:"변22", q:"반대신문은 주신문에 나타난 사항·관련 사항에 관하여 하며, 필요할 때에는 유도신문을 할 수 있다.", a:"O", ex:"규칙 76조 ①②.", cite:"규칙 제76조"},
+      {tag:"변22", q:"반대신문 기회에 주신문에 안 나온 새로운 사항을 신문하려면 재판장의 허가를 받아야 한다.", a:"O", ex:"규칙 76조 ④, 그 사항은 주신문으로 봄(유도 불가).", cite:"규칙 제76조 ④"},
+      {tag:"2007도9327", q:"외국인이라도 국어에 통하면 통역이 필요 없으나, 대한민국 국민이라도 국어에 통하지 않으면 통역하게 하여야 한다.", a:"O", ex:"국적 아닌 국어 소통 여부 기준.", cite:"2007도9327"},
+      {tag:"변22", q:"297조에 따라 재판장은 증인이 피고인 면전에서 충분히 진술할 수 없다고 인정하면 피고인을 퇴정시켜 직접 대면을 제한하고 반대신문권을 배제할 수 있다.", a:"X", ex:"대면 제한은 가능해도 반대신문권 배제는 불가(변호인 통해 기회 부여).", cite:"2011도15608"},
+      {tag:"변22", q:"비디오 등 중계장치 증인신문에서 규칙이 피고인-증인 간 차폐시설만 규정하므로, 검사·변호인·방청인과 증인 사이에는 차폐시설을 설치할 수 없다.", a:"X", ex:"검사·변호인·방청인에 대해서도 차폐 가능.", cite:"2014도18006"},
+      {tag:"모25", q:"법원은 증인이 멀리 살거나 교통이 불편하거나 건강 등으로 직접 출석이 어렵다고 인정하면, 검사·피고인·변호인 의견을 들어 중계시설을 통해 신문할 수 있다.", a:"O", ex:"제165조의2 ②.", cite:"제165조의2 ②"},
+    ]},
+  { sec:"13·14. 감정인신문 · 피해자 권리", note:"감정인은 구인 불가→과태료도 X / 피해자는 재판절차진술권만, 증인신청권 없음",
+    items:[
+      {tag:"변26", q:"감정서 의견 설명을 들으려고 감정인을 증인으로 소환했는데 송달받고도 불출석했다면, 증인 불출석 제재인 151조 1항 과태료를 부과할 수 있다.", a:"X", ex:"감정인은 소환 불응해도 구인 불가(177조) → 과태료 X.", cite:"2023모358 / 제177조"},
+      {tag:"모25", q:"위촉 감정을 수행한 감정인을 증인·감정증인으로 소환해 신문하는 경우, 전문적 의견 진술이 명백하더라도 송달받고 불출석하면 151조 1항 과태료를 부과할 수 있다.", a:"X", ex:"과거 경험사실 진술 지위가 아닌 감정인 → 과태료 부과 불가.", cite:"2023모358"},
+      {tag:"변18", q:"모욕죄 공판심리 중 피해자 甲은 제3자 B를 증인으로 신문해 줄 것을 수소법원에 신청할 수 있다.", a:"X", ex:"피해자는 재판절차진술권만 있고 증인신청권은 없음(294조는 검사·피고인·변호인).", cite:"제294조 ①"},
+      {tag:"294조의2", q:"법원은 동일한 범죄사실에 대해 피해자 진술신청을 한 자가 수인이면 신청한 모든 피해자를 증인으로 신문하여야 한다.", a:"X", ex:"진술할 자의 수를 제한할 수 있음.", cite:"제294조의2 ③"},
+    ]},
+];
+
+let order = [];
+let answered = {};
+let correctCount = 0;
+let totalQ = 0;
+
+function build(){
+  const quiz = document.getElementById('quiz');
+  quiz.innerHTML = '';
+  let gi = 0;
+  DATA.forEach((sec, si)=>{
+    const sh = document.createElement('div');
+    sh.className='section-head';
+    sh.innerHTML = `<span class="num">${si+1}</span><h2>${sec.sec.replace(/^\d+(·\d+)?\.\s*/,'')}</h2>`;
+    quiz.appendChild(sh);
+    const sn = document.createElement('p');
+    sn.className='section-note';
+    sn.textContent = sec.note;
+    quiz.appendChild(sn);
+
+    sec.items.forEach(it=>{
+      const idx = gi;
+      const card = document.createElement('div');
+      card.className='q';
+      card.id='q'+idx;
+      card.innerHTML = `
+        <span class="q-tag">${it.tag}</span>
+        <div class="q-text"><span class="q-num">Q${idx+1}.</span>${it.q}</div>
+        <div class="choices">
+          <button class="choice" data-pick="O" onclick="pick(${idx},'O')">O <span class="lab">맞다</span></button>
+          <button class="choice" data-pick="X" onclick="pick(${idx},'X')">X <span class="lab">틀리다</span></button>
+        </div>
+        <div class="explain" id="ex${idx}">
+          <div class="explain-inner">
+            <span class="verdict ${it.a==='O'?'o':'x'}">정답 ${it.a}</span>${it.ex}
+            <br><span class="cite">${it.cite}</span>
+          </div>
+        </div>`;
+      quiz.appendChild(card);
+      order.push({idx, a:it.a});
+      gi++;
+    });
+  });
+  totalQ = gi;
+  document.getElementById('pstat').textContent = `0 / ${totalQ}`;
+  document.getElementById('rscore').textContent = `0 / ${totalQ}`;
+}
+
+function pick(idx, choice){
+  if(answered[idx]) return;
+  const ansObj = order.find(o=>o.idx===idx);
+  const correct = ansObj.a;
+  answered[idx] = choice;
+  const card = document.getElementById('q'+idx);
+  card.classList.add('answered');
+  const btns = card.querySelectorAll('.choice');
+  btns.forEach(b=>{
+    b.disabled = true;
+    const p = b.getAttribute('data-pick');
+    if(p===choice){
+      b.classList.add(choice===correct?'sel-correct':'sel-wrong');
+    }
+    if(p===correct && choice!==correct){
+      b.classList.add('reveal-correct');
+    }
+  });
+  if(choice===correct) correctCount++;
+  document.getElementById('ex'+idx).classList.add('show');
+  updateProgress();
+}
+
+function updateProgress(){
+  const done = Object.keys(answered).length;
+  document.getElementById('pfill').style.width = (done/totalQ*100)+'%';
+  document.getElementById('pstat').textContent = `${done} / ${totalQ}`;
+  document.getElementById('pscore').textContent = `정답 ${correctCount}`;
+  if(done===totalQ) showResult();
+}
+
+function showResult(){
+  const r = document.getElementById('result');
+  document.getElementById('rscore').textContent = `${correctCount} / ${totalQ}`;
+  const pct = correctCount/totalQ;
+  let msg;
+  if(pct===1) msg='완벽합니다. 별표는 이제 손에 잡혔어요.';
+  else if(pct>=0.85) msg='안정권입니다. 틀린 몇 개만 다시 보면 됩니다.';
+  else if(pct>=0.7) msg='골격은 잡혔습니다. 공동피고인 표와 위증죄 기준을 한 번 더.';
+  else msg='해설 위주로 한 바퀴 더 돌리면 빠르게 올라옵니다.';
+  document.getElementById('rmsg').textContent = msg;
+  r.classList.add('show');
+  r.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function resetQuiz(){
+  answered = {}; correctCount = 0; order = [];
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('pfill').style.width='0';
+  build();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+build();
+</script>
+
+<!-- 아카이브 모듈 (오답 자동 + 헷갈림 수동) -->
+<script>
+  window.FILE_ID = '3_2';
+  window.FILE_TITLE = '제2장 공판절차';
+</script>
+<script type="module" src="./archive.js"></script>
+</body>
+</html>

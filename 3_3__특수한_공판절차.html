@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>특수한 공판절차 OX 퀴즈 — 별표 정리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1d24;
+    --paper:#f4f1ea;
+    --paper-2:#ece7db;
+    --line:#d8d2c4;
+    --accent:#7a1f2b;
+    --accent-soft:#a8424f;
+    --o-color:#1f6b4a;
+    --x-color:#b03030;
+    --gold:#9a7b2e;
+    --muted:#6f6a5e;
+    --shadow:rgba(40,30,20,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'IBM Plex Sans KR',sans-serif;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(122,31,43,.05), transparent 40%),
+      radial-gradient(circle at 88% 92%, rgba(154,123,46,.06), transparent 42%),
+      var(--paper);
+    color:var(--ink);
+    line-height:1.7;
+    padding:0 0 80px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:780px;margin:0 auto;padding:0 20px;}
+
+  header{
+    padding:54px 20px 40px;
+    text-align:center;
+    border-bottom:2px solid var(--ink);
+    position:relative;
+    background:linear-gradient(180deg, var(--paper-2), transparent);
+  }
+  .eyebrow{
+    font-size:13px;letter-spacing:.42em;text-transform:uppercase;
+    color:var(--accent);font-weight:600;margin-bottom:14px;
+  }
+  header h1{
+    font-family:'Gowun Batang',serif;
+    font-size:clamp(30px,6vw,46px);
+    font-weight:700;letter-spacing:-.01em;line-height:1.15;
+  }
+  header .sub{
+    margin-top:14px;font-size:15px;color:var(--muted);
+    font-weight:300;
+  }
+  .crest{
+    display:inline-block;margin-bottom:18px;
+    width:46px;height:46px;border:2px solid var(--ink);border-radius:50%;
+    line-height:42px;font-family:'Gowun Batang',serif;font-size:22px;font-weight:700;
+    color:var(--ink);
+  }
+
+  .progress-bar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(244,241,234,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:12px 20px;
+  }
+  .progress-inner{max-width:780px;margin:0 auto;display:flex;align-items:center;gap:14px;}
+  .ptrack{flex:1;height:7px;background:var(--paper-2);border-radius:99px;overflow:hidden;border:1px solid var(--line);}
+  .pfill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-soft));border-radius:99px;transition:width .4s cubic-bezier(.2,.8,.2,1);}
+  .pstat{font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .pscore{font-size:13px;font-weight:600;color:var(--accent);white-space:nowrap;font-variant-numeric:tabular-nums;}
+
+  .section-head{
+    margin:46px 0 8px;
+    display:flex;align-items:baseline;gap:12px;
+  }
+  .section-head .num{
+    font-family:'Gowun Batang',serif;font-size:14px;font-weight:700;
+    color:#fff;background:var(--accent);
+    min-width:30px;height:30px;border-radius:6px;
+    display:inline-flex;align-items:center;justify-content:center;
+    flex-shrink:0;align-self:center;padding:0 6px;
+  }
+  .section-head h2{
+    font-family:'Gowun Batang',serif;font-size:21px;font-weight:700;
+  }
+  .section-note{
+    font-size:13.5px;color:var(--muted);margin:0 0 20px 42px;
+    border-left:2px solid var(--gold);padding-left:12px;
+  }
+
+  .q{
+    background:#fdfbf6;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:22px 22px 20px;
+    margin-bottom:16px;
+    box-shadow:0 2px 10px var(--shadow);
+    position:relative;
+    transition:border-color .25s, box-shadow .25s;
+  }
+  .q.answered{box-shadow:0 1px 4px var(--shadow);}
+  .q-tag{
+    display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;
+    color:var(--gold);border:1px solid var(--gold);border-radius:99px;
+    padding:1px 9px;margin-bottom:12px;
+  }
+  .q-num{
+    font-family:'Gowun Batang',serif;font-weight:700;color:var(--accent);
+    margin-right:8px;
+  }
+  .q-text{font-size:15.5px;line-height:1.75;color:var(--ink);}
+
+  .choices{display:flex;gap:12px;margin-top:18px;}
+  .choice{
+    flex:1;border:1.5px solid var(--line);background:#fff;
+    border-radius:10px;padding:13px 0;cursor:pointer;
+    font-family:'Gowun Batang',serif;font-size:24px;font-weight:700;
+    transition:all .18s ease;color:var(--muted);
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .choice .lab{font-family:'IBM Plex Sans KR';font-size:13px;font-weight:500;}
+  .choice:hover:not(:disabled){transform:translateY(-2px);border-color:var(--ink);color:var(--ink);}
+  .choice:disabled{cursor:default;}
+  .choice.sel-correct{background:var(--o-color);border-color:var(--o-color);color:#fff;}
+  .choice.sel-wrong{background:var(--x-color);border-color:var(--x-color);color:#fff;}
+  .choice.reveal-correct{border-color:var(--o-color);color:var(--o-color);background:rgba(31,107,74,.08);}
+
+  .explain{
+    margin-top:0;max-height:0;overflow:hidden;
+    transition:max-height .4s ease, margin-top .3s ease;
+  }
+  .explain.show{max-height:460px;margin-top:16px;}
+  .explain-inner{
+    border-top:1px dashed var(--line);padding-top:14px;
+    font-size:14px;line-height:1.7;color:#3a3a3a;
+  }
+  .verdict{font-weight:700;font-family:'Gowun Batang',serif;font-size:15px;margin-right:6px;}
+  .verdict.o{color:var(--o-color);}
+  .verdict.x{color:var(--x-color);}
+  .cite{
+    display:inline-block;font-size:12px;color:var(--accent);
+    background:rgba(122,31,43,.07);border-radius:5px;padding:1px 7px;
+    margin-top:8px;font-weight:500;
+  }
+
+  #result{
+    margin-top:50px;padding:34px 28px;border-radius:14px;
+    background:linear-gradient(135deg,var(--ink),#2e333d);
+    color:var(--paper);text-align:center;display:none;
+    box-shadow:0 8px 28px rgba(40,30,20,.3);
+  }
+  #result.show{display:block;animation:pop .5s ease;}
+  @keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+  #result h3{font-family:'Gowun Batang',serif;font-size:24px;margin-bottom:8px;}
+  #result .big{font-family:'Gowun Batang',serif;font-size:52px;font-weight:700;color:#e9c46a;margin:6px 0;}
+  #result .msg{font-size:14.5px;color:#cfc9bd;font-weight:300;}
+  .retry{
+    margin-top:22px;background:transparent;border:1.5px solid var(--paper);
+    color:var(--paper);padding:11px 26px;border-radius:99px;cursor:pointer;
+    font-family:'IBM Plex Sans KR';font-size:14px;font-weight:500;transition:all .2s;
+  }
+  .retry:hover{background:var(--paper);color:var(--ink);}
+
+  footer{text-align:center;margin-top:40px;font-size:12px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="crest">特</span>
+  <div class="eyebrow">형사소송법 · 공판</div>
+  <h1>제3장 특수한 공판절차<br>별표 OX 퀴즈</h1>
+  <p class="sub">★·☆ 표시 지문만 추려 만든 24문항 · 답을 고르면 즉시 해설이 펼쳐집니다</p>
+</header>
+
+<div class="progress-bar">
+  <div class="progress-inner">
+    <span class="pstat" id="pstat">0 / 24</span>
+    <div class="ptrack"><div class="pfill" id="pfill"></div></div>
+    <span class="pscore" id="pscore">정답 0</span>
+  </div>
+</div>
+
+<div class="wrap" id="quiz"></div>
+
+<div class="wrap">
+  <div id="result">
+    <h3>채점 결과</h3>
+    <div class="big" id="rscore">0 / 24</div>
+    <p class="msg" id="rmsg"></p>
+    <button class="retry" onclick="resetQuiz()">다시 풀기</button>
+  </div>
+</div>
+
+<footer>간이공판절차 · 자백의 의미 · 증거동의 의제 · 국민참여재판 의사확인 · 배제·개시결정 불복 · 배심원 · 항소심</footer>
+
+<script>
+const DATA = [
+  { sec:"1. 간이공판절차 — 자백의 의미·요건", note:"공판정 자백만(준비절차 X) / 명시적 유죄 자인까지는 불요 / 범의 부인·심신상실 주장은 자백 아님",
+    items:[
+      {tag:"변13", q:"피고인의 진술이 자백이 되려면 공소장 기재사실을 인정하고 위법성·책임 조각사유 사실을 진술하지 않는 것으로는 부족하고, 명시적으로 유죄를 자인하는 진술까지 하여야 한다.", a:"X", ex:"공소사실 인정 + 조각사유 진술 안 함이면 충분, 명시적 유죄 자인은 불요.", cite:"87도1269"},
+      {tag:"변25", q:"피고인이 제1회 공판기일에 검사 신문 때는 공소사실이 모두 사실과 다름없다고 했으나, 이후 변호인 신문 때 범의·공소사실을 부인하더라도 그 공소사실은 간이공판절차로 심판할 수 있다.", a:"X", ex:"도중에 부인하면 자백한 때에 해당 안 함 → 간이공판 대상 아님.", cite:"97도3421"},
+      {tag:"2004도2116", q:"피고인이 공소사실은 모두 사실과 다름없다고 하면서 술에 만취되어 기억이 없다는 취지로 진술한 경우, 법원은 간이공판절차 개시결정을 할 수 있다.", a:"X", ex:"범의 부인 + 심신상실 주장 → 자백 아님 → 간이공판 대상 아님.", cite:"2004도2116"},
+    ]},
+  { sec:"2. 간이공판절차 — 증거·증거조사 특칙", note:"전문법칙만 배제(증거동의 의제) / 자백보강·자백배제·위수증·자유심증은 그대로 적용",
+    items:[
+      {tag:"변21", q:"법원이 간이공판절차로 심판할 것을 결정했다면, 사경 작성 A 참고인진술조서는 증거동의가 간주되므로 甲이 증거로 함에 이의를 제기하더라도 유죄증거로 쓸 수 있다.", a:"X", ex:"검사·피고인·변호인이 이의하면 동의 간주 안 됨(318조의3 단서).", cite:"제318조의3"},
+      {tag:"보강법칙", q:"간이공판절차에서도 전문법칙과는 달리, 자백의 보강법칙은 적용된다.", a:"O", ex:"전문법칙만 배제, 자백보강법칙은 그대로 적용.", cite:"제318조의3"},
+      {tag:"위수증", q:"간이공판절차에서는 위법수집증거라도 증거동의에 의하여 증거능력이 인정된다.", a:"X", ex:"위법수집증거배제법칙은 간이공판절차에도 그대로 적용.", cite:"제318조의3"},
+    ]},
+  { sec:"3. 간이공판절차 — 취소·효력", note:"개시결정은 검사 의견 불요·항고 불가 / 취소는 검사 의견 필요 / 취소 시 갱신(이의 없으면 생략)",
+    items:[
+      {tag:"제301조의2", q:"간이공판절차결정이 취소된 때에는, 검사·피고인·변호인의 이의가 없는 경우에도 법원은 공판절차를 갱신하여야 한다.", a:"X", ex:"취소 시 원칙 갱신, 단 이의 없으면 갱신 불요.", cite:"제301조의2"},
+      {tag:"변19", q:"甲이 제1심에서 무고죄를 자백해 간이공판절차로 진행된 후 항소심에서 범행을 부인하면, 간이공판절차 효력이 상실되어 다시 증거조사를 하여야 한다.", a:"X", ex:"제1심에서 증거능력 있던 증거는 항소심에서도 유지 → 재증거조사 불요.", cite:"97도3421"},
+    ]},
+  { sec:"4. 국민참여재판 — 의사확인·배제·개시결정", note:"7일 경과해도 1회 기일 전까진 신청 가능 / 배제결정=즉시항고 / 개시결정=불복 불가",
+    items:[
+      {tag:"변20", q:"공소장 부본을 송달받은 날부터 7일 이내에 의사확인서를 제출하지 않은 피고인도, 제1회 공판기일 전까지는 국민참여재판 신청을 할 수 있고 법원은 이를 확인해 진행할 수 있다.", a:"O", ex:"7일 경과해도 제1회 기일 전이면 신청 가능.", cite:"2009모1032"},
+      {tag:"변18", q:"제1심 법원이 피고인 의사에 따라 국민참여재판으로 진행하면서, 이의가 있어 국민참여재판으로 진행하기로 결정한 경우 검사는 그 결정에 대해 즉시항고를 할 수 있다.", a:"X", ex:"개시결정은 판결 전 소송절차 결정 → 즉시항고·항고 불가.", cite:"2009모1032"},
+      {tag:"변16", q:"검사의 이의로 공판준비기일에서 의견을 다시 들은 후 국민참여재판으로 진행하기로 결정했는데 검사가 항고한 경우, 법원은 항고기각결정을 해야 한다.", a:"O", ex:"개시결정은 불복 불가 → 부적법한 항고이므로 기각.", cite:"2009모1032"},
+      {tag:"변12", q:"법원은 공범관계 피고인 중 일부가 국민참여재판을 원하지 않아 진행에 어려움이 있다고 판단한 경우, 국민참여재판을 하지 않는 결정을 할 수 있다.", a:"O", ex:"국참법 9조 ① 2호 배제사유.", cite:"국참법 제9조 ① 2호"},
+      {tag:"모25", q:"성폭력 피해자 측이 국민참여재판이 적절하지 않다는 의견을 밝혔더라도, 법원이 예외없이 배제결정을 하여야 하는 것은 아니다.", a:"O", ex:"피해자 처벌불원 등 사유는 '할 수 있다'(재량적 배제).", cite:"국참법 제9조 ① 3호"},
+      {tag:"모25", q:"국민참여재판 배제결정에 대하여 피고인은 즉시항고를 할 수 있다.", a:"O", ex:"배제결정은 즉시항고 가능(개시결정은 불복 불가와 대비).", cite:"국참법 제9조 ③"},
+    ]},
+  { sec:"5. 국민참여재판 — 의사확인 누락의 하자·치유", note:"확인 안 한 채 통상절차 진행=위법, 소송행위 무효 / 치유엔 충분한 안내+숙고 시간 필요",
+    items:[
+      {tag:"변22", q:"제1심이 강도강간죄로 기소된 甲에게 국민참여재판 의사확인 절차를 거치지 않고 통상의 공판절차로 진행한 경우, 제1심 공판절차는 위법하고 항소심에서도 하자 치유가 인정될 수 없다.", a:"X", ex:"항소심에서 피고인이 원치 않으며 위법을 문제삼지 않을 의사를 명백히 표시하면 치유됨.", cite:"2012도13896"},
+      {tag:"변20", q:"의사확인 없이 통상절차로 진행했더라도 항소심 1회 기일에 이의 없다는 피고인·변호인의 진술만으로 하자가 치유되므로, 같은 날 변론종결 후 다음 기일에 항소기각 판결을 선고해도 적법하다.", a:"X", ex:"치유엔 충분한 안내 + 숙고할 상당한 시간의 사전 부여 필요.", cite:"2012도13896"},
+      {tag:"변16", q:"법원이 배제결정 없이 통상의 공판절차로 진행하는 것은 위법하지만, 그 공판절차에서 이루어진 소송행위는 유효하다.", a:"X", ex:"국민참여재판 받을 권리 중대 침해 → 그 소송행위도 무효.", cite:"2012도13896"},
+      {tag:"2012도13896", q:"이 경우 항소심은 하자 치유 여부를 판단해 결국 치유되지 않으면 직권으로 제1심판결을 파기하고 항소심이 다시 판결하여야 한다.", a:"X", ex:"소송행위 무효 → 직권 파기 후 사건을 제1심법원으로 '환송'.", cite:"2012도13896"},
+    ]},
+  { sec:"6. 국민참여재판 — 절차·배심원·항소심", note:"변호인 없으면 필요적 국선(33조 사유 불문) / 새 배심원 참여 시 갱신 / 무죄 만장일치 평결 후 항소심 새 증거조사는 예외적",
+    items:[
+      {tag:"변14", q:"피고인이 국민참여재판을 원하는 의사를 표시하면, 지원 합의부는 배제결정을 하지 않는 한 회부결정을 하여 사건을 지방법원 본원 합의부로 이송하여야 한다.", a:"O", ex:"국참법 10조 ①.", cite:"국참법 제10조 ①"},
+      {tag:"변20", q:"국민참여재판에 변호인이 없는 때에는 형소법 33조 1항 각호(구속·미성년자·70세 이상 등) 어느 하나에 해당하지 않더라도 법원은 직권으로 변호인을 선정하여야 한다.", a:"O", ex:"국민참여재판은 필요적 국선(33조 사유 불문).", cite:"국참법 제7조"},
+      {tag:"변18", q:"국민참여재판은 간이공판절차의 증거능력·증거조사 특칙을 적용하기에 부적합하므로, 간이공판절차에 관한 규정을 적용하지 아니한다.", a:"O", ex:"국참법 43조 — 286조의2 적용 배제.", cite:"국참법 제43조"},
+      {tag:"변24", q:"공소장변경으로 국민참여재판 대상사건에 해당하지 않게 된 경우에도 법원은 계속 진행하여야 하나, 본원 합의부가 심판하기로 결정할 수 있고 그 결정에는 불복할 수 없다.", a:"O", ex:"국참법 6조 ①·②.", cite:"국참법 제6조"},
+      {tag:"변20", q:"국민참여재판에서 배심원은 사실인정·법령적용·양형에 관한 의견 제시 권한은 있으나, 법원의 증거능력에 관한 심리에 관여할 수는 없다.", a:"O", ex:"국참법 12조 ①·44조.", cite:"국참법 제12조·44조"},
+      {tag:"국참법45조", q:"공판절차가 개시된 후 새로 재판에 참여하는 예비배심원이 있는 경우, 법원은 공판절차를 갱신할 필요가 없다.", a:"X", ex:"새 배심원·예비배심원 참여 시 공판절차 갱신해야.", cite:"국참법 제45조 ①"},
+      {tag:"국참법46조", q:"배심원은 유·무죄에 전원 의견이 일치하지 않으면 평결 전 판사의 의견을 들어야 하고, 이 경우 평결은 다수결로 한다.", a:"O", ex:"국참법 46조 ③.", cite:"국참법 제46조 ③"},
+      {tag:"2014도8377", q:"재판장이 최종 설명 때 공소사실 설명을 일부 빠뜨리거나 미흡하게 했다면, 설명의무 위반으로 그 공판절차에서 이루어진 소송행위는 전부 무효라고 보아야 한다.", a:"X", ex:"바로 전부 무효는 아님 — 평결에 직접 영향·권리 본질 침해에 이르렀는지 신중 판단.", cite:"2014도8377"},
+      {tag:"모25", q:"제1심 국민참여재판에서 배심원 만장일치 무죄 평결이 재판부 심증에 부합해 채택된 경우, 그 무죄판결에 대한 항소심의 추가·새 증거조사는 원칙적으로 가능하다.", a:"X", ex:"원칙 가능 아님 — 필요성이 분명히 인정되는 예외적 경우에 한정.", cite:"2020도7802"},
+    ]},
+];
+
+let order = [];
+let answered = {};
+let correctCount = 0;
+let totalQ = 0;
+
+function build(){
+  const quiz = document.getElementById('quiz');
+  quiz.innerHTML = '';
+  let gi = 0;
+  DATA.forEach((sec, si)=>{
+    const sh = document.createElement('div');
+    sh.className='section-head';
+    sh.innerHTML = `<span class="num">${si+1}</span><h2>${sec.sec.replace(/^\d+(·\d+)?\.\s*/,'')}</h2>`;
+    quiz.appendChild(sh);
+    const sn = document.createElement('p');
+    sn.className='section-note';
+    sn.textContent = sec.note;
+    quiz.appendChild(sn);
+
+    sec.items.forEach(it=>{
+      const idx = gi;
+      const card = document.createElement('div');
+      card.className='q';
+      card.id='q'+idx;
+      card.innerHTML = `
+        <span class="q-tag">${it.tag}</span>
+        <div class="q-text"><span class="q-num">Q${idx+1}.</span>${it.q}</div>
+        <div class="choices">
+          <button class="choice" data-pick="O" onclick="pick(${idx},'O')">O <span class="lab">맞다</span></button>
+          <button class="choice" data-pick="X" onclick="pick(${idx},'X')">X <span class="lab">틀리다</span></button>
+        </div>
+        <div class="explain" id="ex${idx}">
+          <div class="explain-inner">
+            <span class="verdict ${it.a==='O'?'o':'x'}">정답 ${it.a}</span>${it.ex}
+            <br><span class="cite">${it.cite}</span>
+          </div>
+        </div>`;
+      quiz.appendChild(card);
+      order.push({idx, a:it.a});
+      gi++;
+    });
+  });
+  totalQ = gi;
+  document.getElementById('pstat').textContent = `0 / ${totalQ}`;
+  document.getElementById('rscore').textContent = `0 / ${totalQ}`;
+}
+
+function pick(idx, choice){
+  if(answered[idx]) return;
+  const ansObj = order.find(o=>o.idx===idx);
+  const correct = ansObj.a;
+  answered[idx] = choice;
+  const card = document.getElementById('q'+idx);
+  card.classList.add('answered');
+  const btns = card.querySelectorAll('.choice');
+  btns.forEach(b=>{
+    b.disabled = true;
+    const p = b.getAttribute('data-pick');
+    if(p===choice){
+      b.classList.add(choice===correct?'sel-correct':'sel-wrong');
+    }
+    if(p===correct && choice!==correct){
+      b.classList.add('reveal-correct');
+    }
+  });
+  if(choice===correct) correctCount++;
+  document.getElementById('ex'+idx).classList.add('show');
+  updateProgress();
+}
+
+function updateProgress(){
+  const done = Object.keys(answered).length;
+  document.getElementById('pfill').style.width = (done/totalQ*100)+'%';
+  document.getElementById('pstat').textContent = `${done} / ${totalQ}`;
+  document.getElementById('pscore').textContent = `정답 ${correctCount}`;
+  if(done===totalQ) showResult();
+}
+
+function showResult(){
+  const r = document.getElementById('result');
+  document.getElementById('rscore').textContent = `${correctCount} / ${totalQ}`;
+  const pct = correctCount/totalQ;
+  let msg;
+  if(pct===1) msg='완벽합니다. 특수절차는 이제 손에 잡혔어요.';
+  else if(pct>=0.85) msg='안정권입니다. 틀린 몇 개만 다시 보면 됩니다.';
+  else if(pct>=0.7) msg='골격은 잡혔습니다. 배제↔개시 불복 차이와 하자 치유 요건을 한 번 더.';
+  else msg='해설 위주로 한 바퀴 더 돌리면 빠르게 올라옵니다.';
+  document.getElementById('rmsg').textContent = msg;
+  r.classList.add('show');
+  r.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function resetQuiz(){
+  answered = {}; correctCount = 0; order = [];
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('pfill').style.width='0';
+  build();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+build();
+</script>
+
+<!-- 아카이브 모듈 (오답 자동 + 헷갈림 수동) -->
+<script>
+  window.FILE_ID = '3_3';
+  window.FILE_TITLE = '제3장 특수한 공판절차';
+</script>
+<script type="module" src="./archive.js"></script>
+</body>
+</html>

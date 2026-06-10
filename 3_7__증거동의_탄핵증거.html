@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>증거동의와 탄핵증거 OX 퀴즈 — 별표 정리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1d24;
+    --paper:#f4f1ea;
+    --paper-2:#ece7db;
+    --line:#d8d2c4;
+    --accent:#7a1f2b;
+    --accent-soft:#a8424f;
+    --o-color:#1f6b4a;
+    --x-color:#b03030;
+    --gold:#9a7b2e;
+    --muted:#6f6a5e;
+    --shadow:rgba(40,30,20,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'IBM Plex Sans KR',sans-serif;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(122,31,43,.05), transparent 40%),
+      radial-gradient(circle at 88% 92%, rgba(154,123,46,.06), transparent 42%),
+      var(--paper);
+    color:var(--ink);
+    line-height:1.7;
+    padding:0 0 80px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:780px;margin:0 auto;padding:0 20px;}
+
+  header{
+    padding:54px 20px 40px;
+    text-align:center;
+    border-bottom:2px solid var(--ink);
+    position:relative;
+    background:linear-gradient(180deg, var(--paper-2), transparent);
+  }
+  .eyebrow{
+    font-size:13px;letter-spacing:.42em;text-transform:uppercase;
+    color:var(--accent);font-weight:600;margin-bottom:14px;
+  }
+  header h1{
+    font-family:'Gowun Batang',serif;
+    font-size:clamp(28px,5.5vw,44px);
+    font-weight:700;letter-spacing:-.01em;line-height:1.15;
+  }
+  header .sub{
+    margin-top:14px;font-size:15px;color:var(--muted);
+    font-weight:300;
+  }
+  .crest{
+    display:inline-block;margin-bottom:18px;
+    width:46px;height:46px;border:2px solid var(--ink);border-radius:50%;
+    line-height:42px;font-family:'Gowun Batang',serif;font-size:22px;font-weight:700;
+    color:var(--ink);
+  }
+
+  .progress-bar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(244,241,234,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:12px 20px;
+  }
+  .progress-inner{max-width:780px;margin:0 auto;display:flex;align-items:center;gap:14px;}
+  .ptrack{flex:1;height:7px;background:var(--paper-2);border-radius:99px;overflow:hidden;border:1px solid var(--line);}
+  .pfill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-soft));border-radius:99px;transition:width .4s cubic-bezier(.2,.8,.2,1);}
+  .pstat{font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .pscore{font-size:13px;font-weight:600;color:var(--accent);white-space:nowrap;font-variant-numeric:tabular-nums;}
+
+  .section-head{
+    margin:46px 0 8px;
+    display:flex;align-items:baseline;gap:12px;
+  }
+  .section-head .num{
+    font-family:'Gowun Batang',serif;font-size:14px;font-weight:700;
+    color:#fff;background:var(--accent);
+    min-width:30px;height:30px;border-radius:6px;
+    display:inline-flex;align-items:center;justify-content:center;
+    flex-shrink:0;align-self:center;padding:0 6px;
+  }
+  .section-head h2{
+    font-family:'Gowun Batang',serif;font-size:21px;font-weight:700;
+  }
+  .section-note{
+    font-size:13.5px;color:var(--muted);margin:0 0 20px 42px;
+    border-left:2px solid var(--gold);padding-left:12px;
+  }
+
+  .q{
+    background:#fdfbf6;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:22px 22px 20px;
+    margin-bottom:16px;
+    box-shadow:0 2px 10px var(--shadow);
+    position:relative;
+    transition:border-color .25s, box-shadow .25s;
+  }
+  .q.answered{box-shadow:0 1px 4px var(--shadow);}
+  .q-tag{
+    display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;
+    color:var(--gold);border:1px solid var(--gold);border-radius:99px;
+    padding:1px 9px;margin-bottom:12px;
+  }
+  .q-num{
+    font-family:'Gowun Batang',serif;font-weight:700;color:var(--accent);
+    margin-right:8px;
+  }
+  .q-text{font-size:15.5px;line-height:1.75;color:var(--ink);}
+
+  .choices{display:flex;gap:12px;margin-top:18px;}
+  .choice{
+    flex:1;border:1.5px solid var(--line);background:#fff;
+    border-radius:10px;padding:13px 0;cursor:pointer;
+    font-family:'Gowun Batang',serif;font-size:24px;font-weight:700;
+    transition:all .18s ease;color:var(--muted);
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .choice .lab{font-family:'IBM Plex Sans KR';font-size:13px;font-weight:500;}
+  .choice:hover:not(:disabled){transform:translateY(-2px);border-color:var(--ink);color:var(--ink);}
+  .choice:disabled{cursor:default;}
+  .choice.sel-correct{background:var(--o-color);border-color:var(--o-color);color:#fff;}
+  .choice.sel-wrong{background:var(--x-color);border-color:var(--x-color);color:#fff;}
+  .choice.reveal-correct{border-color:var(--o-color);color:var(--o-color);background:rgba(31,107,74,.08);}
+
+  .explain{
+    margin-top:0;max-height:0;overflow:hidden;
+    transition:max-height .4s ease, margin-top .3s ease;
+  }
+  .explain.show{max-height:520px;margin-top:16px;}
+  .explain-inner{
+    border-top:1px dashed var(--line);padding-top:14px;
+    font-size:14px;line-height:1.7;color:#3a3a3a;
+  }
+  .verdict{font-weight:700;font-family:'Gowun Batang',serif;font-size:15px;margin-right:6px;}
+  .verdict.o{color:var(--o-color);}
+  .verdict.x{color:var(--x-color);}
+  .cite{
+    display:inline-block;font-size:12px;color:var(--accent);
+    background:rgba(122,31,43,.07);border-radius:5px;padding:1px 7px;
+    margin-top:8px;font-weight:500;
+  }
+
+  #result{
+    margin-top:50px;padding:34px 28px;border-radius:14px;
+    background:linear-gradient(135deg,var(--ink),#2e333d);
+    color:var(--paper);text-align:center;display:none;
+    box-shadow:0 8px 28px rgba(40,30,20,.3);
+  }
+  #result.show{display:block;animation:pop .5s ease;}
+  @keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+  #result h3{font-family:'Gowun Batang',serif;font-size:24px;margin-bottom:8px;}
+  #result .big{font-family:'Gowun Batang',serif;font-size:52px;font-weight:700;color:#e9c46a;margin:6px 0;}
+  #result .msg{font-size:14.5px;color:#cfc9bd;font-weight:300;}
+  .retry{
+    margin-top:22px;background:transparent;border:1.5px solid var(--paper);
+    color:var(--paper);padding:11px 26px;border-radius:99px;cursor:pointer;
+    font-family:'IBM Plex Sans KR';font-size:14px;font-weight:500;transition:all .2s;
+  }
+  .retry:hover{background:var(--paper);color:var(--ink);}
+
+  footer{text-align:center;margin-top:40px;font-size:12px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="crest">同</span>
+  <div class="eyebrow">형사소송법 · 공판</div>
+  <h1>제7장 증거동의와 탄핵증거<br>OX 퀴즈</h1>
+  <p class="sub">★·☆·○ 표시 지문 · 답을 고르면 즉시 해설이 펼쳐집니다</p>
+</header>
+
+<div class="progress-bar">
+  <div class="progress-inner">
+    <span class="pstat" id="pstat">0 / 0</span>
+    <div class="ptrack"><div class="pfill" id="pfill"></div></div>
+    <span class="pscore" id="pscore">정답 0</span>
+  </div>
+</div>
+
+<div class="wrap" id="quiz"></div>
+
+<div class="wrap">
+  <div id="result">
+    <h3>채점 결과</h3>
+    <div class="big" id="rscore">0 / 0</div>
+    <p class="msg" id="rmsg"></p>
+    <button class="retry" onclick="resetQuiz()">다시 풀기</button>
+  </div>
+</div>
+
+<footer>증거동의(318조) · 변호인의 증거동의 · 증거동의 의제 · 탄핵증거(318조의2)</footer>
+
+<script>
+const DATA = [
+  { sec:"1. 증거동의 (제318조)", note:"동의한 서류·물건도 법원이 '진정성'을 인정해야 증거능력 / 임의성 없는 진술·위법수집증거는 동의해도 증거능력 없음 / 일단 부여된 증거능력은 조사완료 후 철회해도 존속",
+    items:[
+      {tag:"☆ 변12", q:"검사와 피고인이 증거로 할 수 있음에 동의한 서류라고 하더라도, 법원이 진정한 것으로 인정한 때에 비로소 증거로 할 수 있다.", a:"O", ex:"동의가 있어도 법원의 '진정성 인정'이라는 요건이 추가로 필요하다.", cite:"제318조 제1항"},
+      {tag:"★ 변23", q:"개개의 증거에 대하여 개별적으로 증거동의를 받지 아니하고, 검사가 제시한 모든 증거에 대하여 피고인이 증거로 함에 동의한다는 방식(일괄동의)으로 증거동의가 이루어졌더라도, 증거동의로서의 효력을 부정할 이유가 되지 못한다.", a:"O", ex:"이른바 포괄적·일괄 동의도 유효하다.", cite:"82도2873"},
+      {tag:"변18", q:"피고인이 증거동의의 법적 효과를 잘 모르고 동의했다고 주장하나 그렇게 볼 자료가 없고, 변호인이 공판정에 재정하면서 그 동의에 아무런 이의·취소를 하지 않았다면, 그 동의에 법률적 하자가 있다고 할 수 없다.", a:"O", ex:"변호인 재정 하에 이의 없이 이루어진 동의 → 법률적 하자 없음.", cite:"83도1019"},
+      {tag:"★ 변23", q:"증거동의의 의사표시는 증거조사가 완료되기 전까지 철회할 수 있으나, 일단 증거조사가 완료된 뒤에는 철회가 인정되지 아니하므로, 제1심에서 한 증거동의를 제2심에서 철회할 수 없다.", a:"O", ex:"조사 완료 후 철회·취소해도 이미 취득한 증거능력은 상실되지 않고 그대로 존속한다.", cite:"2004도4428"},
+      {tag:"★ 변13", q:"진술에 임의성이 인정되지 않아 증거능력이 없는 증거라도, 당사자가 동의하고 법원이 진정한 것으로 인정하면 증거능력이 있다.", a:"X", ex:"임의성 없는 진술증거는 동의·진정성 인정이 있어도 증거로 삼을 수 없다.", cite:"2004도7900"},
+      {tag:"★ 모25", q:"진술증거의 임의성에 의심할 만한 사정이 나타난 경우 법원은 직권으로 임의성 여부를 조사하여야 하고, 임의성이 인정되지 않는 진술증거는 피고인이 증거동의를 하더라도 증거능력이 없다.", a:"O", ex:"임의성은 직권조사사항이며, 동의로 치유되지 않는다.", cite:"2004도7900"},
+      {tag:"★ 위수증", q:"위법수집증거에 해당하여 그 증거능력이 부정되는 경우, 피고인이나 변호인이 이를 증거로 함에 동의하더라도 증거로 사용할 수 없다.", a:"O", ex:"위법수집증거배제법칙은 당사자 동의로 극복되지 않는다.", cite:"2009도2109 등"},
+    ]},
+
+  { sec:"2. 변호인의 증거동의", note:"동의 주체는 검사·피고인 / 변호인은 피고인의 명시한 의사에 '반하지 않는 한' 대리 동의 가능(명시 위임 불요, 명시 의사에 반하면 불가) / 피고인은 조사완료 전 변호인 동의를 취소·철회 가능",
+    items:[
+      {tag:"★ 변20", q:"변호인은 피고인의 명시한 의사에 반하여 증거로 함에 동의할 수 있다.", a:"X", ex:"변호인은 피고인의 명시한 의사에 '반하지 아니하는 한' 대리하여 동의할 수 있을 뿐, 명시 의사에 반해서는 동의할 수 없다.", cite:"2004도4428"},
+      {tag:"★ 변12", q:"증거동의의 주체는 검사와 피고인이므로, 변호인은 피고인의 명시적 위임이 없는 한 피고인을 대리하여 증거로 함에 동의할 수 없다.", a:"X", ex:"명시적 위임이 없어도 피고인의 명시 의사에 반하지 않는 한 변호인의 대리 동의는 가능하다.", cite:"2004도4428"},
+      {tag:"★ 변24", q:"제1회 공판기일에 피고인과 변호인이 혈액감정의뢰회보에 증거부동의했는데, 피고인이 불출석한 제3회 공판기일에 변호인이 이를 증거로 하는 데 동의했다면, 그 증거동의는 효력이 있다.", a:"X", ex:"피고인이 출석한 기일에 부동의 의견을 진술했다면, 이후 불출석 기일에 변호인만 출석해 번복 동의해도 특별한 사정이 없는 한 효력이 없다.", cite:"2013도3"},
+      {tag:"☆ 변25", q:"검사 신청 증거에 대한 변호인의 증거동의에 피고인이 즉시 이의하지 않으면 증거능력이 인정되고, 이후 피고인이 증거조사 완료 '전'에 그 동의를 취소·철회하더라도 일단 부여된 증거능력은 그대로 유지된다.", a:"X", ex:"피고인은 증거조사 완료 전에는 변호인의 동의를 취소·철회할 수 있다. 완료 전 취소·철회하면 증거능력이 유지되지 않는다.", cite:"99도2029"},
+    ]},
+
+  { sec:"3. 증거동의 의제", note:"출정 없이 증거조사 가능한 경우 불출정 → 318조②로 동의 간주(단 대리인·변호인 출정 시 예외) / 소촉법 23조·재판거부 퇴정도 간주 / 일단 간주·조사완료된 증거능력은 항소심 철회·취소로 상실되지 않음",
+    items:[
+      {tag:"★ 변25", q:"약식명령에 불복해 정식재판을 청구한 피고인이 제1심에서 2회 연속 불출정하여 증거동의가 간주된 후 증거조사를 완료한 경우, 피고인이 항소심에 출석해 공소사실을 부인하면서 간주된 동의를 철회·취소하면 증거능력이 상실된다.", a:"X", ex:"증거조사 완료 후에는 항소심에서 철회·취소해도 적법하게 부여된 증거능력이 상실되지 않는다.", cite:"2007도5776"},
+      {tag:"★ 변23", q:"피고인의 출정 없이 증거조사를 할 수 있는 경우에 피고인이 출정하지 않으면 제318조 제2항의 동의가 있는 것으로 간주되지만, 대리인 또는 변호인이 출정한 때에는 그러하지 아니하다.", a:"O", ex:"대리인·변호인이 출정하면 동의 간주의 예외(318조② 단서).", cite:"제318조 제2항"},
+      {tag:"☆ 변20", q:"제1심에서 피고인이 공시송달에 의한 공판기일 소환을 2회 이상 받고도 불출석하여 소송촉진법 제23조 본문에 따라 출정 없이 증거조사를 하는 때에는, 제318조 제2항에 따른 증거동의가 간주된다.", a:"O", ex:"소촉법 23조 본문에 따른 불출석 → 동의 간주.", cite:"2010도15977"},
+      {tag:"★ 변26", q:"피고인이 공판심리 중 재판거부 의사를 표시하며 재판장 허가 없이 퇴정하고 변호인도 동조하여 퇴정한 경우, 필요적 변호사건에 해당하는 때에도 피고인·변호인의 불출석 상태에서 재판을 진행할 수 있다.", a:"O", ex:"방어권 남용·변호권 포기로 보아 제330조에 의해 재정 없이도 심리·판결 가능.", cite:"91도865"},
+      {tag:"★ 변26", q:"위 상황에서 법원이 증거조사를 할 수밖에 없는 경우에는, 검사가 제출한 전문증거에 대하여 피고인의 진의와 관계없이 제318조 제1항의 동의가 있는 것으로 간주한다.", a:"O", ex:"퇴정으로 인한 불출석 시에도 318조② 규정상 318조①의 동의가 간주된다.", cite:"91도865"},
+      {tag:"★ 변20", q:"피고인이 재판장 허가 없이 퇴정하면 진술 없이 판결할 수 있지만, 피고인·변호인이 모두 불출석한 상태에서 증거조사를 할 수밖에 없는 경우에는 피고인 측의 증거동의가 있는 것으로 간주해서는 안 된다.", a:"X", ex:"이 경우에도 제318조 제2항 규정상 피고인의 진의와 관계없이 제318조 제1항의 동의가 있는 것으로 간주된다.", cite:"91도865"},
+    ]},
+
+  { sec:"4. 탄핵증거 (제318조의2)", note:"탄핵증거 = 증명력 다투기용(전문법칙 적용 없음, 진정성립 불요) / 범죄·간접사실 인정용은 불가 / 위법수집증거·임의성 없는 자백은 탄핵증거로도 불가 / 엄격한 증거조사는 불요하나 탄핵증거로서의 조사는 필요",
+    items:[
+      {tag:"○ 자기모순", q:"증인의 신용성을 탄핵하기 위하여 공판정 외에서의 자기모순의 진술을 증거로 제출하는 경우에는 전문법칙이 적용되지 않는다.", a:"O", ex:"탄핵증거는 전문법칙의 '예외'가 아니라 전문법칙의 적용 자체가 없는 경우.", cite:"제318조의2"},
+      {tag:"○ 변18", q:"탄핵증거에 대하여는 그 진정성립이 증명되지 않더라도 무방하다.", a:"O", ex:"312~316조로 증거능력이 없는 서류·진술이라도 증명력을 다투기 위해 쓸 수 있다.", cite:"제318조의2 제1항"},
+      {tag:"★ 변18", q:"탄핵증거는 범죄사실 인정 증거가 아니므로 엄격한 증거조사를 거칠 필요는 없는바, 증거의 어느 부분으로 진술의 어느 부분을 다투려는지까지 사전에 상대방에게 알릴 필요는 없다.", a:"O", ex:"어느 부분으로 어느 부분을 다투는지에 관한 사전 고지는 불요.", cite:"2005도2617"},
+      {tag:"★ 변17", q:"탄핵증거는 범죄사실 인정 증거가 아니므로 엄격한 증거조사를 거칠 필요는 없으나, 법정에서 이에 대한 탄핵증거로서의 증거조사는 필요하다.", a:"O", ex:"엄격한 증거조사는 불요, 다만 탄핵증거로서의 증거조사 자체는 필요하다.", cite:"2005도2617"},
+      {tag:"☆ 변18", q:"피고인이 법정에서 내용부인한 사경 작성 피의자신문조서에 대해, 검사가 증거제출 당시 탄핵증거라는 입증취지를 명시하지 않았다면, 법정진술에 대한 탄핵증거로서의 증거조사절차가 대부분 이루어졌더라도 그 조서를 탄핵증거로 사용할 수 없다.", a:"X", ex:"입증취지를 명시하지 않았어도 탄핵증거로서의 증거조사절차가 대부분 이루어졌다면 탄핵증거로 사용할 수 있다.", cite:"2005도2617"},
+      {tag:"○ 변18", q:"증거목록에 기재되지 않았고 증거결정도 없었던 증거는, 공판과정에서 그 입증취지가 구체적으로 명시되고 제시까지 되었더라도 탄핵증거로서의 증거조사가 이루어졌다고 볼 수 없다.", a:"X", ex:"증거목록 기재·증거결정이 없었어도 입증취지가 구체적으로 명시되고 제시까지 되었다면 탄핵증거로서의 증거조사는 이루어진 것.", cite:"2005도6271"},
+      {tag:"★ 변24", q:"甲이 사경 피의자신문에서는 살인교사를 인정했으나 법정에서 부인하는 경우, 甲이 내용부인한 甲에 대한 사경 작성 피의자신문조서는 임의성이 인정되는 한 甲의 법정진술을 탄핵하기 위한 반대증거로 사용될 수 있다.", a:"O", ex:"내용부인으로 본증으로서의 증거능력은 없어도, 임의성 의심 사정이 없으면 탄핵(반대)증거로는 사용 가능.", cite:"2013도12507"},
+      {tag:"★ 변16", q:"증인 C가 공판정에서 자신에 대한 사경 작성 참고인진술조서와 모순되는 진술을 하면서 그 조서의 진정성립을 부인하는 경우, 그 참고인진술조서는 C의 법정진술에 대한 탄핵증거로 사용될 수 없다.", a:"X", ex:"진정성립을 부인해도 임의성을 의심할 사정이 없는 한 법정진술 탄핵용 반대증거로 쓸 수 있다.", cite:"2013도12507"},
+      {tag:"☆ 변17", q:"탄핵증거는 진술의 증명력을 감쇄하기 위하여 인정되는 것이므로, 범죄사실 또는 그 간접사실을 인정하는 증거로서는 허용되지 않는다.", a:"O", ex:"탄핵증거는 증명력 감쇄용일 뿐, 범죄·간접사실 인정용으로는 불가.", cite:"2011도5459"},
+      {tag:"☆ 접견부", q:"체포·구속인접견부에 '내가 A를 강간하였다'는 甲의 진술이 기재되어 있다며 검사가 이를 탄핵증거로 신청한 경우, 이는 결국 공소사실 자체를 입증하기 위한 것이므로 탄핵증거로 볼 수 없다.", a:"O", ex:"피고인의 부인진술 탄핵을 빙자해, 검사에게 입증책임이 있는 공소사실 자체를 입증하려는 것 → 탄핵증거 불가.", cite:"2011도5459"},
+      {tag:"○ 보조사실", q:"구성요건에 해당하는 사실은 엄격한 증명에 의하여야 하고, 증거능력 없는 증거는 구성요건사실을 추인케 하는 간접사실이나 직접증거의 증명력을 보강하는 보조사실의 인정자료로서도 허용되지 아니한다.", a:"O", ex:"증거능력 없는 증거는 간접사실·보조사실의 인정자료로도 쓸 수 없다.", cite:"2006도6356"},
+      {tag:"☆ 위수증", q:"위법한 절차에 의해 수집된 증거는 탄핵증거로도 사용할 수 없다.", a:"O", ex:"전문법칙상 증거능력 없는 증거는 탄핵증거로 쓸 수 있어도, 위법수집증거는 탄핵증거로도 불가.", cite:"제318조의2 제1항"},
+      {tag:"☆ 임의성", q:"임의성 없는 자백은 탄핵증거로도 사용될 수 없다.", a:"O", ex:"임의성 없는 자백은 본증은 물론 탄핵증거로도 허용되지 않는다.", cite:"2005도2617"},
+    ]},
+];
+
+let order = [];
+let answered = {};
+let correctCount = 0;
+let totalQ = 0;
+
+function build(){
+  const quiz = document.getElementById('quiz');
+  quiz.innerHTML = '';
+  order = [];
+  let gi = 0;
+  DATA.forEach((sec, si)=>{
+    const sh = document.createElement('div');
+    sh.className='section-head';
+    sh.innerHTML = `<span class="num">${si+1}</span><h2>${sec.sec.replace(/^\d+(·\d+)?\.\s*/,'')}</h2>`;
+    quiz.appendChild(sh);
+    const sn = document.createElement('p');
+    sn.className='section-note';
+    sn.textContent = sec.note;
+    quiz.appendChild(sn);
+
+    sec.items.forEach(it=>{
+      const idx = gi;
+      const card = document.createElement('div');
+      card.className='q';
+      card.id='q'+idx;
+      card.innerHTML = `
+        <span class="q-tag">${it.tag}</span>
+        <div class="q-text"><span class="q-num">Q${idx+1}.</span>${it.q}</div>
+        <div class="choices">
+          <button class="choice" data-pick="O" onclick="pick(${idx},'O')">O <span class="lab">맞다</span></button>
+          <button class="choice" data-pick="X" onclick="pick(${idx},'X')">X <span class="lab">틀리다</span></button>
+        </div>
+        <div class="explain" id="ex${idx}">
+          <div class="explain-inner">
+            <span class="verdict ${it.a==='O'?'o':'x'}">정답 ${it.a}</span>${it.ex}
+            <br><span class="cite">${it.cite}</span>
+          </div>
+        </div>`;
+      quiz.appendChild(card);
+      order.push({idx, a:it.a});
+      gi++;
+    });
+  });
+  totalQ = gi;
+  document.getElementById('pstat').textContent = `0 / ${totalQ}`;
+  document.getElementById('rscore').textContent = `0 / ${totalQ}`;
+}
+
+function pick(idx, choice){
+  if(answered[idx]) return;
+  const ansObj = order.find(o=>o.idx===idx);
+  const correct = ansObj.a;
+  answered[idx] = choice;
+  const card = document.getElementById('q'+idx);
+  card.classList.add('answered');
+  const btns = card.querySelectorAll('.choice');
+  btns.forEach(b=>{
+    b.disabled = true;
+    const p = b.getAttribute('data-pick');
+    if(p===choice){
+      b.classList.add(choice===correct?'sel-correct':'sel-wrong');
+    }
+    if(p===correct && choice!==correct){
+      b.classList.add('reveal-correct');
+    }
+  });
+  if(choice===correct) correctCount++;
+  document.getElementById('ex'+idx).classList.add('show');
+  updateProgress();
+}
+
+function updateProgress(){
+  const done = Object.keys(answered).length;
+  document.getElementById('pfill').style.width = (done/totalQ*100)+'%';
+  document.getElementById('pstat').textContent = `${done} / ${totalQ}`;
+  document.getElementById('pscore').textContent = `정답 ${correctCount}`;
+  if(done===totalQ) showResult();
+}
+
+function showResult(){
+  const r = document.getElementById('result');
+  document.getElementById('rscore').textContent = `${correctCount} / ${totalQ}`;
+  const pct = correctCount/totalQ;
+  let msg;
+  if(pct===1) msg='완벽합니다. 동의의 철회·간주, 탄핵증거의 한계까지 손에 잡혔어요.';
+  else if(pct>=0.85) msg='안정권입니다. 틀린 몇 개만 다시 보면 됩니다.';
+  else if(pct>=0.7) msg='골격은 잡혔습니다. 변호인의 대리 동의(명시 의사에 반하지 않는 한)와 의제 동의의 철회 불가를 한 번 더.';
+  else msg='해설 위주로 한 바퀴 더 돌리면 빠르게 올라옵니다. 절별 핵심 포인트부터.';
+  document.getElementById('rmsg').textContent = msg;
+  r.classList.add('show');
+  r.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function resetQuiz(){
+  answered = {}; correctCount = 0; order = [];
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('pfill').style.width='0';
+  build();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+build();
+</script>
+
+<!-- 아카이브 모듈 (오답 자동 + 헷갈림 수동) -->
+<script>
+  window.FILE_ID = '3_7';
+  window.FILE_TITLE = '제7장 증거동의·탄핵증거';
+</script>
+<script type="module" src="./archive.js"></script>
+</body>
+</html>

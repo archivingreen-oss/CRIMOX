@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>증거법의 기본이론 OX 퀴즈 — 별표 정리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1d24;
+    --paper:#f4f1ea;
+    --paper-2:#ece7db;
+    --line:#d8d2c4;
+    --accent:#7a1f2b;
+    --accent-soft:#a8424f;
+    --o-color:#1f6b4a;
+    --x-color:#b03030;
+    --gold:#9a7b2e;
+    --muted:#6f6a5e;
+    --shadow:rgba(40,30,20,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'IBM Plex Sans KR',sans-serif;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(122,31,43,.05), transparent 40%),
+      radial-gradient(circle at 88% 92%, rgba(154,123,46,.06), transparent 42%),
+      var(--paper);
+    color:var(--ink);
+    line-height:1.7;
+    padding:0 0 80px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:780px;margin:0 auto;padding:0 20px;}
+
+  header{
+    padding:54px 20px 40px;
+    text-align:center;
+    border-bottom:2px solid var(--ink);
+    position:relative;
+    background:linear-gradient(180deg, var(--paper-2), transparent);
+  }
+  .eyebrow{
+    font-size:13px;letter-spacing:.42em;text-transform:uppercase;
+    color:var(--accent);font-weight:600;margin-bottom:14px;
+  }
+  header h1{
+    font-family:'Gowun Batang',serif;
+    font-size:clamp(30px,6vw,46px);
+    font-weight:700;letter-spacing:-.01em;line-height:1.15;
+  }
+  header .sub{
+    margin-top:14px;font-size:15px;color:var(--muted);
+    font-weight:300;
+  }
+  .crest{
+    display:inline-block;margin-bottom:18px;
+    width:46px;height:46px;border:2px solid var(--ink);border-radius:50%;
+    line-height:42px;font-family:'Gowun Batang',serif;font-size:22px;font-weight:700;
+    color:var(--ink);
+  }
+
+  .progress-bar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(244,241,234,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:12px 20px;
+  }
+  .progress-inner{max-width:780px;margin:0 auto;display:flex;align-items:center;gap:14px;}
+  .ptrack{flex:1;height:7px;background:var(--paper-2);border-radius:99px;overflow:hidden;border:1px solid var(--line);}
+  .pfill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-soft));border-radius:99px;transition:width .4s cubic-bezier(.2,.8,.2,1);}
+  .pstat{font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .pscore{font-size:13px;font-weight:600;color:var(--accent);white-space:nowrap;font-variant-numeric:tabular-nums;}
+
+  .section-head{
+    margin:46px 0 8px;
+    display:flex;align-items:baseline;gap:12px;
+  }
+  .section-head .num{
+    font-family:'Gowun Batang',serif;font-size:14px;font-weight:700;
+    color:#fff;background:var(--accent);
+    min-width:30px;height:30px;border-radius:6px;
+    display:inline-flex;align-items:center;justify-content:center;
+    flex-shrink:0;align-self:center;padding:0 6px;
+  }
+  .section-head h2{
+    font-family:'Gowun Batang',serif;font-size:21px;font-weight:700;
+  }
+  .section-note{
+    font-size:13.5px;color:var(--muted);margin:0 0 20px 42px;
+    border-left:2px solid var(--gold);padding-left:12px;
+  }
+
+  .q{
+    background:#fdfbf6;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:22px 22px 20px;
+    margin-bottom:16px;
+    box-shadow:0 2px 10px var(--shadow);
+    position:relative;
+    transition:border-color .25s, box-shadow .25s;
+  }
+  .q.answered{box-shadow:0 1px 4px var(--shadow);}
+  .q-tag{
+    display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;
+    color:var(--gold);border:1px solid var(--gold);border-radius:99px;
+    padding:1px 9px;margin-bottom:12px;
+  }
+  .q-num{
+    font-family:'Gowun Batang',serif;font-weight:700;color:var(--accent);
+    margin-right:8px;
+  }
+  .q-text{font-size:15.5px;line-height:1.75;color:var(--ink);}
+
+  .choices{display:flex;gap:12px;margin-top:18px;}
+  .choice{
+    flex:1;border:1.5px solid var(--line);background:#fff;
+    border-radius:10px;padding:13px 0;cursor:pointer;
+    font-family:'Gowun Batang',serif;font-size:24px;font-weight:700;
+    transition:all .18s ease;color:var(--muted);
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .choice .lab{font-family:'IBM Plex Sans KR';font-size:13px;font-weight:500;}
+  .choice:hover:not(:disabled){transform:translateY(-2px);border-color:var(--ink);color:var(--ink);}
+  .choice:disabled{cursor:default;}
+  .choice.sel-correct{background:var(--o-color);border-color:var(--o-color);color:#fff;}
+  .choice.sel-wrong{background:var(--x-color);border-color:var(--x-color);color:#fff;}
+  .choice.reveal-correct{border-color:var(--o-color);color:var(--o-color);background:rgba(31,107,74,.08);}
+
+  .explain{
+    margin-top:0;max-height:0;overflow:hidden;
+    transition:max-height .4s ease, margin-top .3s ease;
+  }
+  .explain.show{max-height:460px;margin-top:16px;}
+  .explain-inner{
+    border-top:1px dashed var(--line);padding-top:14px;
+    font-size:14px;line-height:1.7;color:#3a3a3a;
+  }
+  .verdict{font-weight:700;font-family:'Gowun Batang',serif;font-size:15px;margin-right:6px;}
+  .verdict.o{color:var(--o-color);}
+  .verdict.x{color:var(--x-color);}
+  .cite{
+    display:inline-block;font-size:12px;color:var(--accent);
+    background:rgba(122,31,43,.07);border-radius:5px;padding:1px 7px;
+    margin-top:8px;font-weight:500;
+  }
+
+  #result{
+    margin-top:50px;padding:34px 28px;border-radius:14px;
+    background:linear-gradient(135deg,var(--ink),#2e333d);
+    color:var(--paper);text-align:center;display:none;
+    box-shadow:0 8px 28px rgba(40,30,20,.3);
+  }
+  #result.show{display:block;animation:pop .5s ease;}
+  @keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+  #result h3{font-family:'Gowun Batang',serif;font-size:24px;margin-bottom:8px;}
+  #result .big{font-family:'Gowun Batang',serif;font-size:52px;font-weight:700;color:#e9c46a;margin:6px 0;}
+  #result .msg{font-size:14.5px;color:#cfc9bd;font-weight:300;}
+  .retry{
+    margin-top:22px;background:transparent;border:1.5px solid var(--paper);
+    color:var(--paper);padding:11px 26px;border-radius:99px;cursor:pointer;
+    font-family:'IBM Plex Sans KR';font-size:14px;font-weight:500;transition:all .2s;
+  }
+  .retry:hover{background:var(--paper);color:var(--ink);}
+
+  footer{text-align:center;margin-top:40px;font-size:12px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="crest">證</span>
+  <div class="eyebrow">형사소송법 · 공판</div>
+  <h1>제4장 증거법의 기본이론<br>별표 OX 퀴즈</h1>
+  <p class="sub">★·☆ 표시 지문 + 핵심 O 지문 18문항 · 답을 고르면 즉시 해설이 펼쳐집니다</p>
+</header>
+
+<div class="progress-bar">
+  <div class="progress-inner">
+    <span class="pstat" id="pstat">0 / 18</span>
+    <div class="ptrack"><div class="pfill" id="pfill"></div></div>
+    <span class="pscore" id="pscore">정답 0</span>
+  </div>
+</div>
+
+<div class="wrap" id="quiz"></div>
+
+<div class="wrap">
+  <div id="result">
+    <h3>채점 결과</h3>
+    <div class="big" id="rscore">0 / 18</div>
+    <p class="msg" id="rmsg"></p>
+    <button class="retry" onclick="resetQuiz()">다시 풀기</button>
+  </div>
+</div>
+
+<footer>엄격한 증명 vs 자유로운 증명 · 구성요건·주관적 요소 · 처벌조건·소송법적 사실 · 증명책임</footer>
+
+<script>
+const DATA = [
+  { sec:"1. 자유로운 증명의 대상", note:"소송법적 사실·처벌조건·임의성 다툼 등은 자유로운 증명 / 임의성 입증책임은 검사에게",
+    items:[
+      {tag:"변13", q:"반의사불벌죄에서 '처벌불원 의사표시' 또는 '처벌희망 의사표시 철회'의 유무·효력에 관한 사실은 엄격한 증명의 대상이 되지 않는다.", a:"O", ex:"소송조건에 관한 사실 → 자유로운 증명 대상.", cite:"2010도5610"},
+      {tag:"2021도404", q:"출입국사범 필요적 고발사건에서 관서장의 적법한 고발이 있었는지는, 법원이 증거조사 방법·증거능력 제한 없이 자유로운 증명으로 판단하면 된다.", a:"O", ex:"고발 유무(소송조건)는 자유로운 증명.", cite:"2021도404"},
+      {tag:"증명책임", q:"진술의 임의성에 다툼이 있을 때에는, 피고인이 그 임의성을 의심할 합리적·구체적 사실을 입증하여야 하고 검사가 의문점을 해소하는 입증을 하는 것은 아니다.", a:"X", ex:"임의성 의문 해소 입증은 '검사'가 한다.", cite:"2012도9879"},
+      {tag:"2010도14720", q:"피고인의 수사기관 진술의 임의성 유무가 다투어지는 경우, 법원은 자유로운 증명으로 그 임의성 유무를 판단하면 된다.", a:"O", ex:"임의성 유무는 자유로운 심증(증명)으로 판단.", cite:"2010도14720"},
+    ]},
+  { sec:"2. 엄격한 증명의 대상 — 구성요건·법령적용", note:"공모, 외국인 국외범 행위지법, 공연성(전파가능성), 위탁 목적·용도 등은 엄격한 증명",
+    items:[
+      {tag:"변21", q:"공범관계의 공모는 법률상 어떤 정형을 요구하는 것이 아니므로, 공모관계를 인정하기 위하여 엄격한 증명이 요구되지는 않는다.", a:"X", ex:"공모관계 인정에도 엄격한 증명 필요.", cite:"2011도9721"},
+      {tag:"변22", q:"특정 소수가 있는 자리에서의 명예훼손에서, 발언의 전파가능성에 대한 증명은 검사의 자유로운 증명으로 충분하다.", a:"X", ex:"공연성(구성요건) → 전파가능성은 검사의 엄격한 증명 필요, 정도는 '개연성'.", cite:"2020도5813"},
+      {tag:"외국인 국외범", q:"외국인이 대한민국 영역 외에서 대한민국 국민에 대해 범죄를 저지른 경우, 형법 6조 단서의 행위지 법률에 의해 범죄를 구성하는지는 엄격한 증명으로 검사가 증명하여야 한다.", a:"O", ex:"행위지 법률 구성 여부 → 엄격한 증명.", cite:"2011도6507"},
+      {tag:"변23", q:"목적·용도를 정해 위탁한 금전을 수탁자가 임의 소비하면 횡령죄가 될 수 있는데, 위탁 사실 및 그 목적·용도가 무엇인지는 엄격한 증명의 대상이 된다.", a:"O", ex:"횡령죄 구성요건 관련 사실 → 엄격한 증명.", cite:"2013도8121"},
+      {tag:"위드마크", q:"과학공식 등 경험칙을 이용하는 경우 그 적용의 전제가 되는 개별·구체적 사실은 엄격한 증명을 요하므로, 위드마크 공식의 섭취 알코올량·음주시각·체중 등 전제사실도 엄격한 증명이 요구된다.", a:"O", ex:"공식 적용의 전제사실 → 엄격한 증명.", cite:"2008도5531"},
+    ]},
+  { sec:"3. 엄격한 증명의 대상 — 주관적 구성요건요소", note:"고의·목적·불법영득의사 등 주관적 요소도 구성요건이면 엄격한 증명",
+    items:[
+      {tag:"변16", q:"사문서위조죄 행위자에게 '행사할 목적'이 있었다는 점은 검사가 증명하여야 하나, 그 증명이 반드시 엄격한 증명에 의하여야 하는 것은 아니다.", a:"X", ex:"행사할 목적은 구성요건 → 엄격한 증명 필요.", cite:"구성요건"},
+      {tag:"불법영득의사", q:"횡령죄 행위자에게 '불법영득의사'가 있었다는 점은 검사가 증명하여야 하나, 그 증명이 반드시 엄격한 증명에 의하여야 하는 것은 아니다.", a:"X", ex:"불법영득의사 실현 횡령행위는 엄격한 증거로 증명해야.", cite:"94도998"},
+      {tag:"몰수·추징", q:"몰수 대상 여부나 추징액의 인정 등 몰수·추징의 사유는 범죄구성요건 사실에 관한 것이 아니어서 엄격한 증명이 필요 없다.", a:"O", ex:"몰수·추징 사유는 구성요건 사실 아님 → 자유로운 증명.", cite:"2014도4708"},
+    ]},
+  { sec:"4. 증명책임 — 위법성조각·면책 주장", note:"위법성·책임 조각사유는 피고인이 주장해도 '부존재'를 검사가 엄격한 증명 / 단 형법 310조는 행위자 자유로운 증명",
+    items:[
+      {tag:"변20", q:"甲의 행위가 정당방위 또는 정당행위에 해당한다는 점은 甲이 입증하여야 하나, 그 증명이 의심할 여지 없는 확신을 주는 엄격한 증거에 의하여야 하는 것은 아니다.", a:"X", ex:"위법성조각사유 '부존재'는 검사가 엄격한 증명으로 부담.", cite:"증명책임"},
+      {tag:"변12", q:"형법 310조의 성립요건(진실한 사실로서 오로지 공공의 이익)에 해당한다는 점은 행위자가 엄격한 증거에 의하여 합리적 의심의 여지가 없을 정도로 증명하여야 한다.", a:"X", ex:"310조는 행위자가 증명하되, 엄격한 증명 아닌 '자유로운 증명'으로 족함.", cite:"95도1473"},
+      {tag:"2014도3163", q:"선행차량에 충격되어 쓰러진 피해자를 다시 역과해 사망케 한 공소사실에서, 역과 당시 피해자가 생존해 있었다는 점의 증명책임은 검사에게 있다.", a:"O", ex:"공소사실 증명책임은 검사, 증거 없으면 피고인 이익으로.", cite:"2014도3163"},
+    ]},
+  { sec:"5. 종합 — 13세 미만 인식 등", note:"범죄 성립에 필요한 사실은 검사가 증명",
+    items:[
+      {tag:"2012도7377", q:"성폭법상 13세 미만 미성년자 강간죄가 성립하려면, 피고인이 피해자가 13세 미만임을 알면서 강간하였다는 사실이 검사에 의하여 입증되어야 한다.", a:"O", ex:"13세 미만 인식(고의)은 검사가 입증.", cite:"2012도7377"},
+    ]},
+];
+
+let order = [];
+let answered = {};
+let correctCount = 0;
+let totalQ = 0;
+
+function build(){
+  const quiz = document.getElementById('quiz');
+  quiz.innerHTML = '';
+  let gi = 0;
+  DATA.forEach((sec, si)=>{
+    const sh = document.createElement('div');
+    sh.className='section-head';
+    sh.innerHTML = `<span class="num">${si+1}</span><h2>${sec.sec.replace(/^\d+(·\d+)?\.\s*/,'')}</h2>`;
+    quiz.appendChild(sh);
+    const sn = document.createElement('p');
+    sn.className='section-note';
+    sn.textContent = sec.note;
+    quiz.appendChild(sn);
+
+    sec.items.forEach(it=>{
+      const idx = gi;
+      const card = document.createElement('div');
+      card.className='q';
+      card.id='q'+idx;
+      card.innerHTML = `
+        <span class="q-tag">${it.tag}</span>
+        <div class="q-text"><span class="q-num">Q${idx+1}.</span>${it.q}</div>
+        <div class="choices">
+          <button class="choice" data-pick="O" onclick="pick(${idx},'O')">O <span class="lab">맞다</span></button>
+          <button class="choice" data-pick="X" onclick="pick(${idx},'X')">X <span class="lab">틀리다</span></button>
+        </div>
+        <div class="explain" id="ex${idx}">
+          <div class="explain-inner">
+            <span class="verdict ${it.a==='O'?'o':'x'}">정답 ${it.a}</span>${it.ex}
+            <br><span class="cite">${it.cite}</span>
+          </div>
+        </div>`;
+      quiz.appendChild(card);
+      order.push({idx, a:it.a});
+      gi++;
+    });
+  });
+  totalQ = gi;
+  document.getElementById('pstat').textContent = `0 / ${totalQ}`;
+  document.getElementById('rscore').textContent = `0 / ${totalQ}`;
+}
+
+function pick(idx, choice){
+  if(answered[idx]) return;
+  const ansObj = order.find(o=>o.idx===idx);
+  const correct = ansObj.a;
+  answered[idx] = choice;
+  const card = document.getElementById('q'+idx);
+  card.classList.add('answered');
+  const btns = card.querySelectorAll('.choice');
+  btns.forEach(b=>{
+    b.disabled = true;
+    const p = b.getAttribute('data-pick');
+    if(p===choice){
+      b.classList.add(choice===correct?'sel-correct':'sel-wrong');
+    }
+    if(p===correct && choice!==correct){
+      b.classList.add('reveal-correct');
+    }
+  });
+  if(choice===correct) correctCount++;
+  document.getElementById('ex'+idx).classList.add('show');
+  updateProgress();
+}
+
+function updateProgress(){
+  const done = Object.keys(answered).length;
+  document.getElementById('pfill').style.width = (done/totalQ*100)+'%';
+  document.getElementById('pstat').textContent = `${done} / ${totalQ}`;
+  document.getElementById('pscore').textContent = `정답 ${correctCount}`;
+  if(done===totalQ) showResult();
+}
+
+function showResult(){
+  const r = document.getElementById('result');
+  document.getElementById('rscore').textContent = `${correctCount} / ${totalQ}`;
+  const pct = correctCount/totalQ;
+  let msg;
+  if(pct===1) msg='완벽합니다. 증명의 정도는 이제 손에 잡혔어요.';
+  else if(pct>=0.85) msg='안정권입니다. 틀린 몇 개만 다시 보면 됩니다.';
+  else if(pct>=0.7) msg='골격은 잡혔습니다. 구성요건↔소송법적 사실 구별을 한 번 더.';
+  else msg='해설 위주로 한 바퀴 더 돌리면 빠르게 올라옵니다.';
+  document.getElementById('rmsg').textContent = msg;
+  r.classList.add('show');
+  r.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function resetQuiz(){
+  answered = {}; correctCount = 0; order = [];
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('pfill').style.width='0';
+  build();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+build();
+</script>
+
+<!-- 아카이브 모듈 (오답 자동 + 헷갈림 수동) -->
+<script>
+  window.FILE_ID = '3_4';
+  window.FILE_TITLE = '제4장 증거법의 기본이론';
+</script>
+<script type="module" src="./archive.js"></script>
+</body>
+</html>
