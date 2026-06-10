@@ -19,7 +19,7 @@ import {
 // 다른 Firebase 프로젝트로 옮길 경우 이 객체만 교체하면 됩니다.
 // ─────────────────────────────────────────────────────────────
 const firebaseConfig = {
-  apiKey:            "AIzaSyCz-QziDKUKmYAllXigd3GlTaM_oyzj2dQ",
+  apiKey:            "AIzaSyCz-QziDKUKmYAIlXigd3GlTaM_oyzj2dQ",
   authDomain:        "studymap-89c09.firebaseapp.com",
   projectId:         "studymap-89c09",
   storageBucket:     "studymap-89c09.firebasestorage.app",
