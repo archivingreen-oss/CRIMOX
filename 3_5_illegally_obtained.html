@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>위법수집증거배제법칙 등 OX 퀴즈 — 별표 정리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1d24;
+    --paper:#f4f1ea;
+    --paper-2:#ece7db;
+    --line:#d8d2c4;
+    --accent:#7a1f2b;
+    --accent-soft:#a8424f;
+    --o-color:#1f6b4a;
+    --x-color:#b03030;
+    --gold:#9a7b2e;
+    --muted:#6f6a5e;
+    --shadow:rgba(40,30,20,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'IBM Plex Sans KR',sans-serif;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(122,31,43,.05), transparent 40%),
+      radial-gradient(circle at 88% 92%, rgba(154,123,46,.06), transparent 42%),
+      var(--paper);
+    color:var(--ink);
+    line-height:1.7;
+    padding:0 0 80px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:780px;margin:0 auto;padding:0 20px;}
+
+  header{
+    padding:54px 20px 40px;
+    text-align:center;
+    border-bottom:2px solid var(--ink);
+    position:relative;
+    background:linear-gradient(180deg, var(--paper-2), transparent);
+  }
+  .eyebrow{
+    font-size:13px;letter-spacing:.42em;text-transform:uppercase;
+    color:var(--accent);font-weight:600;margin-bottom:14px;
+  }
+  header h1{
+    font-family:'Gowun Batang',serif;
+    font-size:clamp(28px,5.5vw,44px);
+    font-weight:700;letter-spacing:-.01em;line-height:1.15;
+  }
+  header .sub{
+    margin-top:14px;font-size:15px;color:var(--muted);
+    font-weight:300;
+  }
+  .crest{
+    display:inline-block;margin-bottom:18px;
+    width:46px;height:46px;border:2px solid var(--ink);border-radius:50%;
+    line-height:42px;font-family:'Gowun Batang',serif;font-size:22px;font-weight:700;
+    color:var(--ink);
+  }
+
+  .progress-bar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(244,241,234,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:12px 20px;
+  }
+  .progress-inner{max-width:780px;margin:0 auto;display:flex;align-items:center;gap:14px;}
+  .ptrack{flex:1;height:7px;background:var(--paper-2);border-radius:99px;overflow:hidden;border:1px solid var(--line);}
+  .pfill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-soft));border-radius:99px;transition:width .4s cubic-bezier(.2,.8,.2,1);}
+  .pstat{font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .pscore{font-size:13px;font-weight:600;color:var(--accent);white-space:nowrap;font-variant-numeric:tabular-nums;}
+
+  .section-head{
+    margin:46px 0 8px;
+    display:flex;align-items:baseline;gap:12px;
+  }
+  .section-head .num{
+    font-family:'Gowun Batang',serif;font-size:14px;font-weight:700;
+    color:#fff;background:var(--accent);
+    min-width:30px;height:30px;border-radius:6px;
+    display:inline-flex;align-items:center;justify-content:center;
+    flex-shrink:0;align-self:center;padding:0 6px;
+  }
+  .section-head h2{
+    font-family:'Gowun Batang',serif;font-size:21px;font-weight:700;
+  }
+  .section-note{
+    font-size:13.5px;color:var(--muted);margin:0 0 20px 42px;
+    border-left:2px solid var(--gold);padding-left:12px;
+  }
+
+  .q{
+    background:#fdfbf6;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:22px 22px 20px;
+    margin-bottom:16px;
+    box-shadow:0 2px 10px var(--shadow);
+    position:relative;
+    transition:border-color .25s, box-shadow .25s;
+  }
+  .q.answered{box-shadow:0 1px 4px var(--shadow);}
+  .q-tag{
+    display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;
+    color:var(--gold);border:1px solid var(--gold);border-radius:99px;
+    padding:1px 9px;margin-bottom:12px;
+  }
+  .q-num{
+    font-family:'Gowun Batang',serif;font-weight:700;color:var(--accent);
+    margin-right:8px;
+  }
+  .q-text{font-size:15.5px;line-height:1.75;color:var(--ink);}
+
+  .choices{display:flex;gap:12px;margin-top:18px;}
+  .choice{
+    flex:1;border:1.5px solid var(--line);background:#fff;
+    border-radius:10px;padding:13px 0;cursor:pointer;
+    font-family:'Gowun Batang',serif;font-size:24px;font-weight:700;
+    transition:all .18s ease;color:var(--muted);
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .choice .lab{font-family:'IBM Plex Sans KR';font-size:13px;font-weight:500;}
+  .choice:hover:not(:disabled){transform:translateY(-2px);border-color:var(--ink);color:var(--ink);}
+  .choice:disabled{cursor:default;}
+  .choice.sel-correct{background:var(--o-color);border-color:var(--o-color);color:#fff;}
+  .choice.sel-wrong{background:var(--x-color);border-color:var(--x-color);color:#fff;}
+  .choice.reveal-correct{border-color:var(--o-color);color:var(--o-color);background:rgba(31,107,74,.08);}
+
+  .explain{
+    margin-top:0;max-height:0;overflow:hidden;
+    transition:max-height .4s ease, margin-top .3s ease;
+  }
+  .explain.show{max-height:480px;margin-top:16px;}
+  .explain-inner{
+    border-top:1px dashed var(--line);padding-top:14px;
+    font-size:14px;line-height:1.7;color:#3a3a3a;
+  }
+  .verdict{font-weight:700;font-family:'Gowun Batang',serif;font-size:15px;margin-right:6px;}
+  .verdict.o{color:var(--o-color);}
+  .verdict.x{color:var(--x-color);}
+  .cite{
+    display:inline-block;font-size:12px;color:var(--accent);
+    background:rgba(122,31,43,.07);border-radius:5px;padding:1px 7px;
+    margin-top:8px;font-weight:500;
+  }
+
+  #result{
+    margin-top:50px;padding:34px 28px;border-radius:14px;
+    background:linear-gradient(135deg,var(--ink),#2e333d);
+    color:var(--paper);text-align:center;display:none;
+    box-shadow:0 8px 28px rgba(40,30,20,.3);
+  }
+  #result.show{display:block;animation:pop .5s ease;}
+  @keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+  #result h3{font-family:'Gowun Batang',serif;font-size:24px;margin-bottom:8px;}
+  #result .big{font-family:'Gowun Batang',serif;font-size:52px;font-weight:700;color:#e9c46a;margin:6px 0;}
+  #result .msg{font-size:14.5px;color:#cfc9bd;font-weight:300;}
+  .retry{
+    margin-top:22px;background:transparent;border:1.5px solid var(--paper);
+    color:var(--paper);padding:11px 26px;border-radius:99px;cursor:pointer;
+    font-family:'IBM Plex Sans KR';font-size:14px;font-weight:500;transition:all .2s;
+  }
+  .retry:hover{background:var(--paper);color:var(--ink);}
+
+  footer{text-align:center;margin-top:40px;font-size:12px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="crest">違</span>
+  <div class="eyebrow">형사소송법 · 공판</div>
+  <h1>제5장 위법수집증거<br>배제법칙 등 OX 퀴즈</h1>
+  <p class="sub">★·☆ 표시 지문 + 핵심 O 지문 26문항 · 답을 고르면 즉시 해설이 펼쳐집니다</p>
+</header>
+
+<div class="progress-bar">
+  <div class="progress-inner">
+    <span class="pstat" id="pstat">0 / 26</span>
+    <div class="ptrack"><div class="pfill" id="pfill"></div></div>
+    <span class="pscore" id="pscore">정답 0</span>
+  </div>
+</div>
+
+<div class="wrap" id="quiz"></div>
+
+<div class="wrap">
+  <div id="result">
+    <h3>채점 결과</h3>
+    <div class="big" id="rscore">0 / 26</div>
+    <p class="msg" id="rmsg"></p>
+    <button class="retry" onclick="resetQuiz()">다시 풀기</button>
+  </div>
+</div>
+
+<footer>위법수집증거 원칙 · 2차적 증거 인과관계(희석·단절) · 영장 하자 · 별개 독립증거 · 사인수집증거 · 자백배제법칙</footer>
+
+<script>
+const DATA = [
+  { sec:"1. 위법수집증거배제 — 원칙·인적 범위", note:"피고인 아닌 자 상대 위법수집도 피고인 유죄증거 X / 인지절차 전 수사라도 그 이유만으로 위법 아님",
+    items:[
+      {tag:"변21", q:"공개금지사유가 없는데도 공개금지결정 하에 비공개로 진행된 증인신문의 증언은 증거능력이 없으나, 변호인의 반대신문권이 보장되었던 경우에는 증거로 사용할 수 있다.", a:"X", ex:"반대신문권 보장돼도 달리 볼 수 없고, 공개금지 사유 불명 시도 마찬가지.", cite:"2013도2511"},
+      {tag:"변22", q:"사경이 피고인 아닌 A를 사실상 강제연행해 불법체포한 상태에서 피고인 처벌을 위해 A로부터 받은 자술서는, 피고인에 대한 유죄 인정의 증거로 사용할 수 없다.", a:"O", ex:"피고인 아닌 자 상대 위법수집증거도 원칙적으로 피고인 유죄증거 X.", cite:"2009도6717"},
+      {tag:"변23", q:"검찰관이 형사사법공조절차 없이 외국 현지출장으로 작성한 참고인진술조서라도, 우리 국민이 자발적으로 응했고 강제력·비자발 요소가 없으며 관할 연관성도 없다면 위법수집증거라 할 수 없다.", a:"O", ex:"강제력·비자발 요소 없으면 위법수집증거 아님.", cite:"2011도3809"},
+      {tag:"변25", q:"검사가 범죄를 인지하고도 범죄인지서를 작성하지 않은 상태에서 피의자신문을 한 경우, 원칙적으로 위법한 수사여서 그 피의자신문조서는 증거능력이 없다.", a:"X", ex:"인지 가능성 전무 등 특별사정 없는 한, 인지절차 전 수사라는 이유만으로 위법 아님.", cite:"2000도2968"},
+    ]},
+  { sec:"2. 음주측정·채뇨 — 위법체포와 인과관계", note:"위법체포 직후 측정·채취는 인과관계 단절 안 됨(동의해도 X) / 단 영장구금 후 절차는 희석 정황",
+    items:[
+      {tag:"변21", q:"위법한 체포 상태에서 음주측정요구가 이루어진 경우, 위법체포와 음주측정요구는 일련의 과정을 전체적으로 보아 위법한 음주측정요구로 볼 수밖에 없어, 운전자가 불응해도 음주측정거부죄로 처벌할 수 없다.", a:"O", ex:"위법체포에 이은 측정요구는 위법 → 불응해도 처벌 불가.", cite:"2004도8404"},
+      {tag:"변14", q:"위법한 강제연행 상태에서 호흡측정 직후 피의자가 탄핵을 위해 스스로 혈액채취를 요구해 채취가 이루어졌다면, 특별한 사정이 없는 한 그 혈액채취 측정 결과는 유죄증거로 쓸 수 있다.", a:"X", ex:"시간·장소·심적 단절 없으면 인과관계 단절 안 됨, 증거동의해도 X.", cite:"2010도2094"},
+      {tag:"변20", q:"임의동행을 거부하는 甲을 강제로 경찰서로 데려가 채뇨 요구를 해 소변검사가 이루어진 경우, 그 결과물인 소변검사시인서는 증거능력이 없다.", a:"O", ex:"위법한 강제연행 상태의 채뇨 결과 → 위법수집증거.", cite:"2012도13611"},
+      {tag:"변15", q:"영장 없이 강제연행해 1차 채뇨를 했더라도 이후 법관 영장으로 적법 구금되고 압수·수색영장으로 2차 채뇨·채모가 적법하게 이루어진 이상, 이는 절차적 위법과 2차적 증거수집 사이의 인과관계를 희석할 정황에 속한다.", a:"O", ex:"적법한 영장 구금·영장 집행은 희석 정황.", cite:"2012도13611"},
+    ]},
+  { sec:"3. 영장 하자 — 서명/날인 누락", note:"서명·날인 둘 다 갖춰야 적법(서명만·날인만 누락 시 영장 자체는 부적법) / 다만 진정 발부 신뢰 시 2차적 증거능력은 인정될 수 있음",
+    items:[
+      {tag:"영장요건", q:"압수·수색영장의 서명날인란에 판사 서명만 있고 날인이 없으며 영장 앞면과 별지 사이에 간인이 있는 경우, 그 영장은 형소법이 정한 요건을 갖추지 못해 적법하게 발부되었다고 볼 수 없다.", a:"O", ex:"서명만 있고 날인 없으면 영장 요건 미비 → 부적법.", cite:"2018도20504"},
+      {tag:"모25", q:"압수영장에 법관 서명 등은 있고 날인만 누락된 경우라도, 그 발부가 법관의 진정한 의사에 기초해 이루어졌다면 그 영장으로 압수한 증거의 증거능력이 인정된다.", a:"O", ex:"영장 자체는 부적법하나 진정 발부 신뢰·영장주의 회피 의도 없으면 증거능력 인정.", cite:"2018도20504"},
+    ]},
+  { sec:"4. 2차적 증거 — 인과관계 희석·단절", note:"위법 1차 증거에서 파생한 진술·법정진술도 단서·핵심증거+위법 중대+제시받음이면 단절 인정 곤란",
+    items:[
+      {tag:"독수독과", q:"강도 현행범에게 진술거부권을 고지하지 않고 자백을 받았더라도, 40여 일 뒤 변호인 조력하에 공개법정에서 임의로 다시 자백했다면 그 법정자백은 증거로 할 수 없다.", a:"X", ex:"40여 일 경과·변호인 조력·공개법정 임의자백은 예외적으로 쓸 수 있는 2차적 증거.", cite:"2008도11437"},
+      {tag:"모25", q:"위법하게 수집된 텔레그램 대화내역 전자정보만을 기초로 수사가 개시되었다면, 甲·乙이 공소사실을 인정하는 법정진술을 했더라도 이는 그 전자정보에 기초한 2차적 증거로 증거능력이 부정된다.", a:"O", ex:"1차 증거가 단서·핵심증거이고 위법 중대, 그 전제로 신문받았으면 법정진술도 단절 곤란.", cite:"2024도12689"},
+      {tag:"2024도12689", q:"수사기관이 위법수집한 1차적 증거가 수사개시 단서이거나 사실상 유일·핵심증거이고 위법 정도도 상당한데, 피고인이 수사기관에서 그 1차적 증거를 제시받거나 그 내용을 전제로 신문받은 바가 있다면, 그 법정진술도 절차 위반과의 인과관계 희석·단절을 인정하기 어려운 정황에 속한다.", a:"O", ex:"1차 증거를 직접 제시받고 한 것과 다름없으므로 단절 인정 곤란.", cite:"2024도12689"},
+      {tag:"변15", q:"현행범을 체포한 경찰관이 진술거부권을 고지하지 않고 甲을 조사해 자백을 받은 경우, 그 경찰관이 법정에서 '甲이 도망쳐 나오는 장면을 목격했다'고 증언하더라도 그 증언은 증거능력이 없다.", a:"X", ex:"경찰관이라도 범행 목격 부분 증언은 여느 목격자처럼 증거능력 있음.", cite:"95도535"},
+    ]},
+  { sec:"5. 위법수집증거가 아닌 경우 / 별개의 독립증거", note:"먼저 채취된 지문은 위법압수와 무관 / 압수조서 '압수경위'란은 별개 독립증거 / 전자정보 위법탐색이면 사진·목록도 X",
+    items:[
+      {tag:"변15", q:"범행 현장에서 지문채취가 먼저 이루어졌고 수사기관이 그 후 지문채취 대상물(맥주컵)을 위법하게 압수한 경우, 압수 이전에 채취된 지문은 그 대상물로부터 획득한 2차적 증거에 해당하여 위법수집증거이다.", a:"X", ex:"지문채취가 압수보다 먼저라 위법압수물에서 획득한 2차 증거가 아님.", cite:"2008도7471"},
+      {tag:"변26", q:"위 사안에서 압수조서 '압수경위'란에 기재된 내용은 甲이 범행 현장을 직접 목격한 사람의 진술이 담긴 것이므로, 형소법 313조 1항에 의하여 증거능력을 인정할 수 있다.", a:"X", ex:"312조 5항('피고인 아닌 자가 수사과정에서 작성한 진술서')에 준하는 것이지 313조 1항이 아님.", cite:"2019도13290"},
+      {tag:"변26", q:"휴대전화 임의제출 압수 절차가 위법하더라도, 압수조서 '압수경위'란에 기재된 (범행 현장 목격) 내용은 압수 절차의 적법 여부에 영향을 받지 않는 별개의 독립적인 증거로 볼 수 있다.", a:"O", ex:"312조 5항 준하는 진술서 → 임의제출 적법성과 무관한 별개 독립증거.", cite:"2019도13290"},
+      {tag:"2019도1967", q:"적법하게 임의제출받은 휴대전화의 전자정보를 참여 기회 없이 위법 탐색·복제·출력한 경우, 압수조서·압수목록과 휴대전화 촬영 사진은 증거동의하더라도 증거능력이 없어 자백 보강증거가 될 수 없다.", a:"X", ex:"이들은 전자정보 증거능력과 무관한 별개 독립증거 → 동의 시 보강증거 가능.", cite:"2019도1967"},
+    ]},
+  { sec:"6. 사인(私人)이 수집한 위법증거", note:"비교형량(공익 vs 인격적 이익)으로 허용 여부 결정 / 위조 연습 업무일지는 제3자 절취·대가 지급해도 허용",
+    items:[
+      {tag:"모25", q:"수사기관이 아닌 사인에 의해 위법하게 수집된 증거에 대하여는, 법원이 효과적 형사소추·진실발견이라는 공익과 개인의 인격적 이익 등 보호이익을 비교형량하여 허용 여부를 결정한다.", a:"O", ex:"사인 위법수집증거는 비교형량으로 허용 여부 판단.", cite:"2021도2299"},
+      {tag:"변24", q:"피고인이 문서위조를 위해 연습한 흔적이 있는 업무일지는, 만약 제3자가 절취한 것이고 소송사기 피해자가 대가를 지급하고 취득한 것이라면 유죄증거로 사용할 수 없다.", a:"X", ex:"사생활 발현물 아니고 형사소추에 필수 → 절취·대가 지급해도 공익상 허용.", cite:"2008도1584"},
+    ]},
+  { sec:"7. 자백배제법칙 (제309조)", note:"임의성 의심 자백은 인과관계 존재 추정 → 인과관계 없음이 명백해야 임의성 인정 / 위법 자백 후 법정에서도 임의성 없으면 X",
+    items:[
+      {tag:"제309조", q:"자백배제법칙에 관한 형소법 309조의 '피고인의 자백'에는 수사기관을 상대로 행한 피의자의 자백도 포함된다.", a:"O", ex:"피의자·참고인·증인 지위 자백도 포함.", cite:"제309조"},
+      {tag:"84도2252", q:"임의성이 없다고 의심할 이유가 있는 자백은 그 인과관계의 존재가 추정되므로, 임의성 의심 사유와 자백 사이에 인과관계가 있음이 밝혀지지 않더라도 그 자백은 증거능력을 가지지 못한다.", a:"O", ex:"인과관계 존재 추정 → 부존재가 명백히 인정되어야 증거능력 있음.", cite:"84도2252"},
+      {tag:"변16", q:"피고인의 자백이 임의성 없다고 의심할 사유가 있더라도, 그 사유와 자백 사이에 인과관계가 존재하지 않음이 명백한 때에는 그 자백은 임의성이 있는 것으로 인정된다.", a:"O", ex:"인과관계 부존재가 명백하면 임의성 인정(반대로 밝혀지지 않으면 증거능력 X).", cite:"84도2252"},
+      {tag:"변15", q:"피고인이 수사기관에서 가혹행위로 임의성 없는 자백을 하고, 이후 법정에서도 임의성 없는 심리상태가 계속되어 동일 내용을 자백했다면, 그 법정자백도 임의성 없는 자백으로 보아야 한다.", a:"O", ex:"임의성 없는 심리상태 계속 → 법정자백도 임의성 없음.", cite:"2012도9879"},
+      {tag:"변15", q:"검찰수사관이 '자백하면 특가법 절도 대신 형법상 절도죄를 적용하겠다'는 각서를 써주며 자백을 유도한 경우, 그 자백은 기망에 의해 임의로 진술한 것이 아니라고 의심할 이유가 있는 때에 해당한다고 볼 수 없다.", a:"X", ex:"기망에 의한 자백에 해당(보호감호 청구 안 하겠다는 각서 사안과 동일 취지).", cite:"85도2182"},
+      {tag:"변15", q:"일정한 증거가 발견되면 자백하겠다는 약속이 강요·위계나 불기소·경한 죄 소추 등 이익과의 교환조건으로 된 것이 아니라면, 그 자백약속 하의 자백이라 하여 곧 임의성 없는 자백이라고 단정할 수는 없다.", a:"O", ex:"강요·교환조건이 아니면 자백약속 하의 자백이라도 임의성 부정 단정 불가.", cite:"83도712"},
+    ]},
+];
+
+let order = [];
+let answered = {};
+let correctCount = 0;
+let totalQ = 0;
+
+function build(){
+  const quiz = document.getElementById('quiz');
+  quiz.innerHTML = '';
+  let gi = 0;
+  DATA.forEach((sec, si)=>{
+    const sh = document.createElement('div');
+    sh.className='section-head';
+    sh.innerHTML = `<span class="num">${si+1}</span><h2>${sec.sec.replace(/^\d+(·\d+)?\.\s*/,'')}</h2>`;
+    quiz.appendChild(sh);
+    const sn = document.createElement('p');
+    sn.className='section-note';
+    sn.textContent = sec.note;
+    quiz.appendChild(sn);
+
+    sec.items.forEach(it=>{
+      const idx = gi;
+      const card = document.createElement('div');
+      card.className='q';
+      card.id='q'+idx;
+      card.innerHTML = `
+        <span class="q-tag">${it.tag}</span>
+        <div class="q-text"><span class="q-num">Q${idx+1}.</span>${it.q}</div>
+        <div class="choices">
+          <button class="choice" data-pick="O" onclick="pick(${idx},'O')">O <span class="lab">맞다</span></button>
+          <button class="choice" data-pick="X" onclick="pick(${idx},'X')">X <span class="lab">틀리다</span></button>
+        </div>
+        <div class="explain" id="ex${idx}">
+          <div class="explain-inner">
+            <span class="verdict ${it.a==='O'?'o':'x'}">정답 ${it.a}</span>${it.ex}
+            <br><span class="cite">${it.cite}</span>
+          </div>
+        </div>`;
+      quiz.appendChild(card);
+      order.push({idx, a:it.a});
+      gi++;
+    });
+  });
+  totalQ = gi;
+  document.getElementById('pstat').textContent = `0 / ${totalQ}`;
+  document.getElementById('rscore').textContent = `0 / ${totalQ}`;
+}
+
+function pick(idx, choice){
+  if(answered[idx]) return;
+  const ansObj = order.find(o=>o.idx===idx);
+  const correct = ansObj.a;
+  answered[idx] = choice;
+  const card = document.getElementById('q'+idx);
+  card.classList.add('answered');
+  const btns = card.querySelectorAll('.choice');
+  btns.forEach(b=>{
+    b.disabled = true;
+    const p = b.getAttribute('data-pick');
+    if(p===choice){
+      b.classList.add(choice===correct?'sel-correct':'sel-wrong');
+    }
+    if(p===correct && choice!==correct){
+      b.classList.add('reveal-correct');
+    }
+  });
+  if(choice===correct) correctCount++;
+  document.getElementById('ex'+idx).classList.add('show');
+  updateProgress();
+}
+
+function updateProgress(){
+  const done = Object.keys(answered).length;
+  document.getElementById('pfill').style.width = (done/totalQ*100)+'%';
+  document.getElementById('pstat').textContent = `${done} / ${totalQ}`;
+  document.getElementById('pscore').textContent = `정답 ${correctCount}`;
+  if(done===totalQ) showResult();
+}
+
+function showResult(){
+  const r = document.getElementById('result');
+  document.getElementById('rscore').textContent = `${correctCount} / ${totalQ}`;
+  const pct = correctCount/totalQ;
+  let msg;
+  if(pct===1) msg='완벽합니다. 독수독과·인과관계는 이제 손에 잡혔어요.';
+  else if(pct>=0.85) msg='안정권입니다. 틀린 몇 개만 다시 보면 됩니다.';
+  else if(pct>=0.7) msg='골격은 잡혔습니다. 인과관계 희석·단절 정황과 별개 독립증거를 한 번 더.';
+  else msg='해설 위주로 한 바퀴 더 돌리면 빠르게 올라옵니다.';
+  document.getElementById('rmsg').textContent = msg;
+  r.classList.add('show');
+  r.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function resetQuiz(){
+  answered = {}; correctCount = 0; order = [];
+  document.getElementById('result').classList.remove('show');
+  document.getElementById('pfill').style.width='0';
+  build();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+build();
+</script>
+
+<!-- 아카이브 모듈 (오답 자동 + 헷갈림 수동) -->
+<script>
+  window.FILE_ID = '3_5';
+  window.FILE_TITLE = '제5장 위법수집증거배제법칙';
+</script>
+<script type="module" src="./archive.js"></script>
+</body>
+</html>

@@ -7,7 +7,8 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
-  getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
+  getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect,
+  getRedirectResult, signOut, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
   getFirestore, doc, setDoc, deleteDoc, collection, getDocs, serverTimestamp
@@ -604,11 +605,38 @@ function updateAuthBar(user){
       <span class="muted">로컬 저장 중</span>
       <button id="signInBtn">Google 로그인</button>
     `;
-    document.getElementById('signInBtn').onclick = () => signInWithPopup(auth, provider);
+    document.getElementById('signInBtn').onclick = async () => {
+      // 1) 먼저 팝업 시도 (빠르고 페이지 유지됨)
+      try {
+        await signInWithPopup(auth, provider);
+        return;
+      } catch (e) {
+        // 팝업 차단/즉시 닫힘 등 → 리디렉션으로 fallback
+        const fallback = [
+          'auth/popup-blocked',
+          'auth/popup-closed-by-user',
+          'auth/cancelled-popup-request',
+          'auth/internal-error',
+          'auth/operation-not-supported-in-this-environment',
+          'auth/web-storage-unsupported'
+        ];
+        if (fallback.includes(e.code)) {
+          await signInWithRedirect(auth, provider);
+        } else {
+          console.warn('signIn error:', e);
+          alert('로그인 중 오류가 발생했습니다. 콘솔을 확인해주세요.');
+        }
+      }
+    };
   }
 }
 
 if(HAS_CONFIG){
+  // 리디렉션 로그인에서 돌아온 경우 결과 처리
+  getRedirectResult(auth).catch(e => {
+    if(e && e.code) console.warn('Redirect result error:', e.code);
+  });
+
   onAuthStateChanged(auth, async (user)=>{
     currentUid = user ? user.uid : null;
     updateAuthBar(user);

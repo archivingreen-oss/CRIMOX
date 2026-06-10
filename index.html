@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>형사소송법 OX 퀴즈</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1d24;
+    --paper:#f4f1ea;
+    --paper-2:#ece7db;
+    --line:#d8d2c4;
+    --accent:#7a1f2b;
+    --accent-soft:#a8424f;
+    --o-color:#1f6b4a;
+    --x-color:#b03030;
+    --gold:#9a7b2e;
+    --muted:#6f6a5e;
+    --shadow:rgba(40,30,20,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'IBM Plex Sans KR',sans-serif;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(122,31,43,.05), transparent 40%),
+      radial-gradient(circle at 88% 92%, rgba(154,123,46,.06), transparent 42%),
+      var(--paper);
+    color:var(--ink);
+    line-height:1.7;
+    padding:0 0 80px;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px;}
+
+  header{
+    padding:64px 20px 44px;
+    text-align:center;
+    border-bottom:2px solid var(--ink);
+    position:relative;
+    background:linear-gradient(180deg, var(--paper-2), transparent);
+  }
+  .crest{
+    display:inline-block;margin-bottom:18px;
+    width:50px;height:50px;border:2px solid var(--ink);border-radius:50%;
+    line-height:46px;font-family:'Gowun Batang',serif;font-size:24px;font-weight:700;
+    color:var(--ink);
+  }
+  .eyebrow{
+    font-size:13px;letter-spacing:.42em;text-transform:uppercase;
+    color:var(--accent);font-weight:600;margin-bottom:14px;
+  }
+  header h1{
+    font-family:'Gowun Batang',serif;
+    font-size:clamp(32px,6vw,52px);
+    font-weight:700;letter-spacing:-.01em;line-height:1.15;
+  }
+  header .sub{
+    margin-top:14px;font-size:15px;color:var(--muted);
+    font-weight:300;
+  }
+
+  .dday-bar{
+    background:var(--ink);
+    color:var(--paper);
+    padding:14px 20px;
+    text-align:center;
+    font-size:13.5px;
+    letter-spacing:.04em;
+    font-weight:400;
+  }
+  .dday-bar b{
+    font-family:'Gowun Batang',serif;
+    color:#e9c46a;
+    font-size:16px;
+    margin:0 6px;
+  }
+
+  .section-head{
+    margin:48px 0 20px;
+    display:flex;align-items:center;gap:14px;
+  }
+  .section-head .num{
+    font-family:'Gowun Batang',serif;
+    background:var(--accent);color:var(--paper);
+    width:34px;height:34px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:15px;font-weight:700;
+  }
+  .section-head h2{
+    font-family:'Gowun Batang',serif;
+    font-size:22px;font-weight:700;
+    color:var(--ink);
+  }
+  .section-note{
+    font-size:13px;color:var(--muted);
+    margin-bottom:24px;
+    padding-left:48px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+    gap:16px;
+  }
+
+  .chapter-card{
+    display:block;
+    background:#fdfbf5;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:22px 22px 20px;
+    text-decoration:none;
+    color:inherit;
+    position:relative;
+    transition:all .22s cubic-bezier(.2,.8,.2,1);
+    box-shadow:0 1px 0 rgba(40,30,20,.03);
+    overflow:hidden;
+  }
+  .chapter-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 26px var(--shadow);
+    border-color:var(--accent);
+  }
+  .chapter-card::before{
+    content:'';
+    position:absolute;left:0;top:0;bottom:0;
+    width:3px;background:var(--accent);
+    opacity:0;transition:opacity .22s;
+  }
+  .chapter-card:hover::before{ opacity:1; }
+
+  .ch-eyebrow{
+    font-size:11.5px;
+    letter-spacing:.32em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+    margin-bottom:8px;
+  }
+  .ch-title{
+    font-family:'Gowun Batang',serif;
+    font-size:20px;
+    font-weight:700;
+    line-height:1.3;
+    margin-bottom:14px;
+    color:var(--ink);
+  }
+  .ch-meta{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    margin-top:18px;padding-top:14px;
+    border-top:1px dashed var(--line);
+  }
+  .ch-count{
+    font-size:13px;
+    color:var(--muted);
+    font-weight:500;
+  }
+  .ch-count b{
+    color:var(--ink);
+    font-weight:700;
+    font-variant-numeric:tabular-nums;
+  }
+  .ch-stats{
+    display:flex;gap:10px;
+    font-size:12px;
+    font-variant-numeric:tabular-nums;
+  }
+  .ch-stat{
+    display:flex;align-items:center;gap:4px;
+    font-weight:600;
+  }
+  .ch-stat.wrong{ color:var(--x-color); }
+  .ch-stat.confused{ color:var(--gold); }
+  .ch-stat .dot{
+    width:7px;height:7px;border-radius:50%;
+    display:inline-block;
+  }
+  .ch-stat.wrong .dot{ background:var(--x-color); }
+  .ch-stat.confused .dot{ background:var(--gold); }
+  .ch-stat.zero{ color:var(--muted); opacity:.55; font-weight:500; }
+  .ch-stat.zero .dot{ background:var(--line); }
+
+  .total-summary{
+    margin-top:50px;
+    padding:26px 28px;
+    background:linear-gradient(135deg, var(--ink), #2e333d);
+    color:var(--paper);
+    border-radius:14px;
+    display:flex;justify-content:space-between;align-items:center;
+    gap:16px;flex-wrap:wrap;
+    box-shadow:0 6px 24px rgba(40,30,20,.18);
+  }
+  .total-summary .label{
+    font-size:13px;letter-spacing:.2em;text-transform:uppercase;
+    color:#cfc9bd;font-weight:500;margin-bottom:4px;
+  }
+  .total-summary .nums{
+    font-family:'Gowun Batang',serif;
+    font-size:28px;font-weight:700;
+    color:#e9c46a;
+  }
+  .total-summary .nums span{ margin:0 4px; }
+  .total-summary .nums small{
+    font-family:'IBM Plex Sans KR';
+    font-size:13px;color:#cfc9bd;font-weight:400;
+    margin-left:4px;
+  }
+
+  footer{
+    text-align:center;margin-top:50px;
+    font-size:12px;color:var(--muted);
+    padding:0 20px;
+  }
+
+  /* archive.js의 floating elements 와 충돌 방지 */
+  body{ padding-bottom:120px; }
+</style>
+</head>
+<body>
+
+<div class="dday-bar">
+  D−<b id="dday">···</b> · 제16회 변호사시험 · <b>2027.01.12</b>
+</div>
+
+<header>
+  <span class="crest">訴</span>
+  <div class="eyebrow">Criminal Procedure</div>
+  <h1>형사소송법 OX 퀴즈</h1>
+  <p class="sub">제3편 공판 · 8개 챕터 · 총 390문항</p>
+</header>
+
+<div class="wrap">
+
+  <div class="section-head">
+    <span class="num">3</span>
+    <h2>제3편 공판</h2>
+  </div>
+  <p class="section-note">★·☆ 표시 + 핵심 O 지문 발췌. 카드를 누르면 챕터별 퀴즈로 이동합니다.</p>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="total-summary">
+    <div>
+      <div class="label">현재 아카이브 상태</div>
+      <div class="nums">
+        <span id="totWrong">0</span>
+        <small>오답</small>
+        <span style="color:#cfc9bd">·</span>
+        <span id="totConfused" style="color:#d9b25a">0</span>
+        <small>헷갈림</small>
+      </div>
+    </div>
+    <div style="text-align:right;font-size:13px;color:#cfc9bd;line-height:1.5;">
+      우하단 🏷️ 버튼으로<br>전체 모아보기
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  로컬 저장 (이 브라우저) · Google 로그인 시 기기 간 동기화 · 유정 님의 변시 준비용
+</footer>
+
+<script>
+  // ─── 챕터 메타데이터 (정확한 문항 수) ────────────────────
+  const CHAPTERS = [
+    { id:'3_1', title:'공판심리의 범위',        file:'3_1_trial_scope.html',      count:54 },
+    { id:'3_2', title:'공판절차',              file:'3_2_trial_procedure.html',           count:58 },
+    { id:'3_3', title:'특수한 공판절차',        file:'3_3_special_trial.html',     count:27 },
+    { id:'3_4', title:'증거법의 기본이론',      file:'3_4_evidence_basics.html',    count:16 },
+    { id:'3_5', title:'위법수집증거배제법칙',    file:'3_5_illegally_obtained.html', count:26 },
+    { id:'3_6', title:'전문법칙',              file:'3_6_hearsay.html',           count:115 },
+    { id:'3_7', title:'증거동의·탄핵증거',      file:'3_7_evidence_consent.html',   count:30 },
+    { id:'3_8', title:'증명력',                file:'3_8_probative_value.html',             count:64 },
+  ];
+
+  // ─── 카드 렌더링 (통계 0으로 초기 렌더) ─────────────────
+  function renderCards(statsByFile = {}){
+    const grid = document.getElementById('gr' + 'id');
+    grid.innerHTML = CHAPTERS.map((ch, i) => {
+      const s = statsByFile[ch.id] || { wrong:0, confused:0 };
+      const w = s.wrong, c = s.confused;
+      return `
+        <a class="chapter-card" href="./${encodeURI(ch.file)}">
+          <div class="ch-eyebrow">제${i+1}장</div>
+          <div class="ch-title">${ch.title}</div>
+          <div class="ch-meta">
+            <div class="ch-count"><b>${ch.count}</b>문항</div>
+            <div class="ch-stats">
+              <span class="ch-stat ${w?'wrong':'zero'}">
+                <span class="dot"></span>${w}
+              </span>
+              <span class="ch-stat ${c?'confused':'zero'}">
+                <span class="dot"></span>${c}
+              </span>
+            </div>
+          </div>
+        </a>
+      `;
+    }).join('');
+  }
+  renderCards();
+
+  // ─── D-Day 계산 ─────────────────────────────────────────
+  (function(){
+    const exam = new Date('2027-01-12T00:00:00+09:00');
+    const today = new Date();
+    const diff = Math.ceil((exam - today) / (1000*60*60*24));
+    document.getElementById('dday').textContent = diff > 0 ? diff : '0';
+  })();
+
+  // ─── archive.js 가 sync 이벤트를 발생시키면 통계 갱신 ────
+  window.addEventListener('archive-sync', async () => {
+    if(!window.ArchiveAPI) return;
+    const items = await window.ArchiveAPI.fetchAll();
+    // 파일별 집계
+    const stats = {};
+    let totW = 0, totC = 0;
+    items.forEach(it => {
+      if(!stats[it.file]) stats[it.file] = { wrong:0, confused:0 };
+      if(it.wrong)    { stats[it.file].wrong++;    totW++; }
+      if(it.confused) { stats[it.file].confused++; totC++; }
+    });
+    renderCards(stats);
+    document.getElementById('totWrong').textContent = totW;
+    document.getElementById('totConfused').textContent = totC;
+  });
+</script>
+
+<!-- 아카이브 모듈 (인덱스 페이지 모드) -->
+<script>
+  window.IS_INDEX_PAGE = true;
+  window.FILE_ID = 'index';
+  window.FILE_TITLE = '메인 메뉴';
+</script>
+<script type="module" src="./archive.js"></script>
+
+</body>
+</html>
