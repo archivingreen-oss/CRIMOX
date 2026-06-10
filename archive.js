@@ -14,17 +14,20 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // ─────────────────────────────────────────────────────────────
-// const firebaseConfig = {
-  apiKey: "AIzaSyCz-QziDKUKmYAIlXigd3GlTaM_oyzj2dQ",
-  authDomain: "studymap-89c09.firebaseapp.com",
-  projectId: "studymap-89c09",
-  storageBucket: "studymap-89c09.firebasestorage.app",
+// firebaseConfig — STUDYMAP과 동일한 프로젝트 (studymap-89c09)
+// 다른 Firebase 프로젝트로 옮길 경우 이 객체만 교체하면 됩니다.
+// ─────────────────────────────────────────────────────────────
+const firebaseConfig = {
+  apiKey:            "AIzaSyCz-QziDKUKmYAllXigd3GlTaM_oyzj2dQ",
+  authDomain:        "studymap-89c09.firebaseapp.com",
+  projectId:         "studymap-89c09",
+  storageBucket:     "studymap-89c09.firebasestorage.app",
   messagingSenderId: "20865447129",
-  appId: "1:20865447129:web:419f96f419b4cba0a43ac8",
-  measurementId: "G-L7LW590E8Q"
+  appId:             "1:20865447129:web:419f96f419b4cba0a43ac8",
+  measurementId:     "G-L7LW590E8Q"
 };
 
-const HAS_CONFIG = !firebaseConfig.apiKey.startsWith("PASTE_");
+const HAS_CONFIG = !!firebaseConfig.apiKey && !firebaseConfig.apiKey.startsWith("PASTE_");
 
 let app, auth, db, provider;
 if (HAS_CONFIG) {
@@ -40,6 +43,7 @@ const COL_NAME = 'quizArchive';
 const FILE_ID    = window.FILE_ID    || 'unknown';
 const FILE_TITLE = window.FILE_TITLE || '';
 const LS_KEY     = 'crimQuizArchive_' + FILE_ID;
+const IS_INDEX   = !!window.IS_INDEX_PAGE;
 
 let currentUid = null;
 let archive    = {}; // { 'q0': {wrong, confused, q, a, ex, cite, tag, file, fileTitle, ...} }
@@ -121,6 +125,9 @@ window.ArchiveAPI = {
   },
   getStatus(qIdx){
     return archive['q' + qIdx] || { wrong:false, confused:false };
+  },
+  async fetchAll(){
+    return await fetchAllItems();
   }
 };
 
@@ -611,6 +618,7 @@ if(HAS_CONFIG){
       archive = loadLocal();
       refreshAllChips();
     }
+    window.dispatchEvent(new CustomEvent('archive-sync'));
   });
 }
 
@@ -621,12 +629,18 @@ function boot(){
   injectAuthBar();
   injectArchiveFab();
   injectModal();
-  injectConfusedButtons();
-  hookPick();
-  hookReset();
-  refreshAllChips();
+  if(!IS_INDEX){
+    injectConfusedButtons();
+    hookPick();
+    hookReset();
+    refreshAllChips();
+  }
   if(!HAS_CONFIG){
     updateAuthBar(null);
+    // 비로그인/미설정 시에도 sync 이벤트 발생
+    setTimeout(()=>{
+      window.dispatchEvent(new CustomEvent('archive-sync'));
+    }, 0);
   }
 }
 
